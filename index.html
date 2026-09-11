@@ -48,8 +48,16 @@
   </aside>
 </main>
 
-<div id="end-overlay" class="hidden">
-  <div id="end-box">
+<div id="popup-overlay" class="overlay hidden">
+  <div class="overlay-box" role="alertdialog" aria-labelledby="popup-text">
+    <div id="popup-text"></div>
+    <button id="popup-ok">OK</button>
+  </div>
+</div>
+
+<div id="end-overlay" class="overlay hidden">
+  <div class="overlay-box">
+    <div id="end-reason"></div>
     <p>Spillet er slutt.</p>
     <button id="end-restart-btn">Start på nytt</button>
   </div>

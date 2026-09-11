@@ -23,7 +23,11 @@
     saveBtn: document.getElementById('save-btn'),
     loadBtn: document.getElementById('load-btn'),
     restartBtn: document.getElementById('restart-btn'),
-    endOverlay: document.getElementById('end-overlay')
+    endOverlay: document.getElementById('end-overlay'),
+    endReason: document.getElementById('end-reason'),
+    popupOverlay: document.getElementById('popup-overlay'),
+    popupText: document.getElementById('popup-text'),
+    popupOk: document.getElementById('popup-ok')
   };
 
   var game = null;
@@ -38,6 +42,9 @@
   // just this turn's new entries as "latest" (a light highlight) and clear
   // that highlight off everything older.
   var pendingLogEls = [];
+  // Popup messages from the current turn. The original shows these in a box the player
+  // has to dismiss (hunger warnings, deaths, key story beats), not in the text pane.
+  var pendingPopups = [];
 
   function setVerb(v) {
     verb = v;
@@ -74,7 +81,34 @@
   function pushLog(entries) {
     (entries || []).forEach(function (e) {
       appendEntry(e.kind === 'popup' ? 'log-popup' : 'log-text', e.text);
+      if (e.kind === 'popup' && e.text) pendingPopups.push(e.text);
     });
+  }
+
+  function fillParagraphs(container, texts) {
+    container.innerHTML = '';
+    texts.forEach(function (t) {
+      var p = document.createElement('p');
+      p.textContent = t;
+      container.appendChild(p);
+    });
+  }
+
+  function showPopups() {
+    var texts = pendingPopups;
+    pendingPopups = [];
+    if (game.ended) {
+      fillParagraphs(el.endReason, texts);
+      return;
+    }
+    if (!texts.length) return;
+    fillParagraphs(el.popupText, texts);
+    el.popupOverlay.classList.remove('hidden');
+    el.popupOk.focus();
+  }
+
+  function closePopup() {
+    el.popupOverlay.classList.add('hidden');
   }
 
   function setDescription(text) {
@@ -90,6 +124,7 @@
     });
     pendingLogEls.forEach(function (n) { n.classList.add('log-latest'); });
     pendingLogEls = [];
+    showPopups();
   }
 
   function render() {
@@ -262,6 +297,8 @@
 
   function restart() {
     game.reset();
+    el.endReason.innerHTML = '';
+    closePopup();
     localStorage.removeItem(SAVE_KEY);
     lastDescKey = null; // force the (now fresh) room description to show again
     render();
@@ -307,6 +344,13 @@
       if (confirm('Start spillet på nytt?')) restart();
     });
     document.getElementById('end-restart-btn').addEventListener('click', restart);
+    el.popupOk.addEventListener('click', closePopup);
+    document.addEventListener('keydown', function (e) {
+      if ((e.key === 'Enter' || e.key === 'Escape') && !el.popupOverlay.classList.contains('hidden')) {
+        e.preventDefault();
+        closePopup();
+      }
+    });
     if (!load()) {
       // fresh game: show the intro text once
       if (data.title) setDescription(data.title);

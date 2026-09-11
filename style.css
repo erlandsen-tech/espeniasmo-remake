@@ -117,8 +117,13 @@ main {
 
 .hidden { display: none !important; }
 
-#end-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; }
-#end-box { background: var(--panel); border: 2px solid var(--gold); padding: 2rem; text-align: center; }
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 10; }
+.overlay-box {
+  background: var(--panel); border: 2px solid var(--gold); border-radius: 8px;
+  padding: 1.5rem 2rem; max-width: 34rem; text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+}
+#popup-text p, #end-reason p { margin: 0 0 0.8rem; font-size: 1.15rem; line-height: 1.45; color: var(--glow); }
+.overlay-box button { margin-top: 0.4rem; min-width: 7rem; padding: 0.6rem 1.2rem; }
 
 @media (max-width: 900px) {
   main { grid-template-columns: 1fr; }
