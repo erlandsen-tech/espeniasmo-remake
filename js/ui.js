@@ -138,21 +138,20 @@
       lastDescKey = descKey;
     }
 
-    // exits
-    el.exits.innerHTML = '';
+    // exits: all eight always drawn so the compass keeps its shape; unavailable ones disabled
+    Array.prototype.slice.call(el.exits.querySelectorAll('button')).forEach(function (b) { b.remove(); });
     var dirs = game.directions();
     DIRS.forEach(function (d) {
-      if (dirs.indexOf(d.key) !== -1) {
-        var btn = document.createElement('button');
-        btn.textContent = d.label;
-        btn.dataset.dir = d.key;
-        btn.addEventListener('click', function () {
-          closeTalkMenu();
-          pushLog(game.go(d.key));
-          afterTurn();
-        });
-        el.exits.appendChild(btn);
-      }
+      var btn = document.createElement('button');
+      btn.textContent = d.label;
+      btn.dataset.dir = d.key;
+      btn.disabled = dirs.indexOf(d.key) === -1;
+      btn.addEventListener('click', function () {
+        closeTalkMenu();
+        pushLog(game.go(d.key));
+        afterTurn();
+      });
+      el.exits.appendChild(btn);
     });
 
     // person present

@@ -56,10 +56,11 @@ main {
 #scene.talkable { cursor: pointer; }
 #scene-frame:has(#scene.talkable) { border-color: var(--glow); box-shadow: 0 0 12px rgba(255, 233, 168, 0.5); }
 
+#lower { display: flex; gap: 0.75rem; margin-top: 0.75rem; align-items: stretch; }
 #log {
-  width: 100%;
+  flex: 1; min-width: 0;
+  scrollbar-color: var(--line) #14100a;
   height: var(--log-h);
-  margin-top: 0.75rem;
   overflow-y: auto;
   background: #14100a;
   border: 1px solid var(--line);
@@ -93,14 +94,24 @@ main {
 #verbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.45rem; }
 #verbs button { padding: 0.7rem 0.3rem; font-size: 1.05rem; }
 
-/* Compass: N/S/E/W on a cross, the vertical and in/out moves on a row below. */
+/* Compass beside the log: N/S/E/W on a cross, up/down/in/out in the corners. */
 #exits {
+  flex: none;
+  width: 17rem;
+  height: var(--log-h);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-areas: "up n in" "w . e" "down s out";
-  gap: 0.35rem;
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-areas: "up n in" "w hub e" "down s out";
+  gap: 0.3rem;
+  padding: 0.35rem;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 4px;
 }
-#exits button { padding: 0.55rem 0.2rem; }
+#exits button { padding: 0.2rem; font-size: 0.95rem; }
+#exits button:disabled { opacity: 0.25; cursor: default; background: #3a2f1c; }
+#exits .hub { grid-area: hub; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 0.9rem; letter-spacing: 0.05em; opacity: 0.8; }
 #exits [data-dir="n"] { grid-area: n; } #exits [data-dir="s"] { grid-area: s; }
 #exits [data-dir="e"] { grid-area: e; } #exits [data-dir="w"] { grid-area: w; }
 #exits [data-dir="up"] { grid-area: up; } #exits [data-dir="down"] { grid-area: down; }
@@ -127,4 +138,6 @@ main {
 
 @media (max-width: 900px) {
   main { grid-template-columns: 1fr; }
+  #lower { flex-direction: column; }
+  #exits { width: 100%; }
 }
