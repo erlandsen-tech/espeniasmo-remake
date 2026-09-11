@@ -27,7 +27,7 @@
   };
 
   var game = null;
-  var verb = 'look'; // look | take | use | talk
+  var verb = 'look'; // look | take | use | give | drop | talk
   // Key of the last (roomId, roomState) pair whose description was shown in
   // the log, so render() (called after every click) only re-appends the
   // room description when it actually changed (entered a new room, or the
@@ -183,6 +183,10 @@
         pushLog(game.use(id));
       } else if (verb === 'look') {
         pushLog(game.look(id));
+      } else if (verb === 'give' && inInventory) {
+        pushLog(game.give(id));
+      } else if (verb === 'drop' && inInventory) {
+        pushLog(game.drop(id));
       } else if (verb === 'talk') {
         // Objects aren't talk targets, but staying silent here is the actual
         // bug: every other verb gives feedback for "select verb, click
@@ -190,9 +194,6 @@
         // actually in the room (same as clicking the portrait), or say so
         // if no one is.
         talkToWhoeverIsHere();
-        return;
-      } else if (verb === 'take' && inInventory) {
-        // take verb clicked on an already-carried item: not meaningful.
         return;
       } else {
         return;
@@ -270,6 +271,8 @@
       { key: 'look', label: 'Se på' },
       { key: 'take', label: 'Ta' },
       { key: 'use', label: 'Bruk' },
+      { key: 'give', label: 'Gi' },
+      { key: 'drop', label: 'Legg fra deg' },
       { key: 'talk', label: 'Snakk' }
     ];
     verbs.forEach(function (v) {

@@ -84,8 +84,12 @@
     (data.rooms || []).forEach(function (r) { this.rooms[r.id] = r; }, this);
     (data.objects || []).forEach(function (o) { this.objects[o.id] = o; }, this);
     (data.characters || []).forEach(function (c) { this.characters[c.id] = c; }, this);
-    this.keyedRules = data.rules_folded || [];
-    this.globalRules = data.global_rules || [];
+    // The original loader moves every rule containing an `else` condition
+    // into a second list that only runs in pass 2 (disasm/0959.asm:0000).
+    var hasElse = function (r) { return r.if.some(function (c) { return c.op === 'else'; }); };
+    var keyed = data.rules_folded || [], global = data.global_rules || [];
+    this.keyedRules = [keyed.filter(function (r) { return !hasElse(r); }), keyed.filter(hasElse)];
+    this.globalRules = [global.filter(function (r) { return !hasElse(r); }), global.filter(hasElse)];
     this.reset();
   }
 
@@ -263,14 +267,12 @@
     for (var i = 0; i < actions.length; i++) this._runAction(actions[i], ctx);
   };
 
-  Game.prototype._passOverRules = function (rules, elsePass, fired, ctx) {
-    for (var i = 0; i < rules.length; i++) {
-      if (fired.has(i)) continue;
+  // Rule lists stop only when the game ends, never on `handled`
+  // (disasm/020a.asm:07D3, 0847).
+  Game.prototype._passOverRules = function (rules, elsePass, ctx) {
+    for (var i = 0; i < rules.length && !this.ended; i++) {
       var r = rules[i];
-      if (this._evalConds(r.if, elsePass)) {
-        this._runActions(r.then, ctx);
-        fired.add(i);
-      }
+      if (this._evalConds(r.if, elsePass)) this._runActions(r.then, ctx);
     }
   };
 
@@ -278,20 +280,19 @@
     return rule.verb === verb && rule.k1 === k1 && (k2 == null || rule.k2 === k2);
   };
 
-  // command: {verb, k1, k2}
+  // command: {verb, k1, k2}. Order per disasm/020a.asm:0966-0B9B: keyed and
+  // global pass 1, default handling unless handled, then keyed and global
+  // pass 2 (the `else` rules) regardless of handled.
   Game.prototype._runTurn = function (command, defaultFn) {
     this.log = [];
     var self = this;
-    var keyed = this.keyedRules.filter(function (r) {
-      return self._matchKey(r, command.verb, command.k1, command.k2);
-    });
+    var match = function (r) { return self._matchKey(r, command.verb, command.k1, command.k2); };
     var ctx = { handled: false };
-    var firedKeyed = new Set(), firedGlobal = new Set();
-    this._passOverRules(keyed, false, firedKeyed, ctx);
-    this._passOverRules(this.globalRules, false, firedGlobal, ctx);
-    if (!ctx.handled && defaultFn) defaultFn(ctx);
-    this._passOverRules(keyed, true, firedKeyed, ctx);
-    this._passOverRules(this.globalRules, true, firedGlobal, ctx);
+    this._passOverRules(this.keyedRules[0].filter(match), false, ctx);
+    this._passOverRules(this.globalRules[0], false, ctx);
+    if (!this.ended && !ctx.handled && defaultFn) defaultFn(ctx);
+    this._passOverRules(this.keyedRules[1].filter(match), true, ctx);
+    this._passOverRules(this.globalRules[1], true, ctx);
     this.turns++;
     return this.log;
   };
@@ -330,6 +331,23 @@
         var name = self.objects[objId] ? self.objects[objId].name : '';
         self.log.push({ kind: 'text', text: 'Du tar ' + name + '.' });
       }
+    });
+  };
+
+  Game.prototype.drop = function (objId) {
+    var self = this;
+    return this._runTurn({ verb: 'drop', k1: objId, k2: 0 }, function () {
+      self.objectLocations[objId] = self.currentRoom;
+      // Synthesized confirmation, same reasoning as take().
+      self.log.push({ kind: 'text', text: 'Du legger fra deg ' + self.objects[objId].name + '.' });
+    });
+  };
+
+  Game.prototype.give = function (objId) {
+    var self = this;
+    return this._runTurn({ verb: 'give', k1: objId, k2: 0 }, function () {
+      var msg = self.personInRoom() ? DEFAULT_MSG.PERSON_DOESNT_WANT : DEFAULT_MSG.NO_ONE_TO_GIVE;
+      self.log.push({ kind: 'text', text: self.msg(msg) });
     });
   };
 
