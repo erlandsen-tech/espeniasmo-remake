@@ -105,8 +105,9 @@
 
     // exits
     el.exits.innerHTML = '';
+    var dirs = game.directions();
     DIRS.forEach(function (d) {
-      if (state.exits && state.exits[d.key]) {
+      if (dirs.indexOf(d.key) !== -1) {
         var btn = document.createElement('button');
         btn.textContent = d.label;
         btn.addEventListener('click', function () {

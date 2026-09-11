@@ -88,6 +88,7 @@
     // into a second list that only runs in pass 2 (disasm/0959.asm:0000).
     var hasElse = function (r) { return r.if.some(function (c) { return c.op === 'else'; }); };
     var keyed = data.rules_folded || [], global = data.global_rules || [];
+    keyed.concat(global).forEach(function (r, i) { r.id = i; });
     this.keyedRules = [keyed.filter(function (r) { return !hasElse(r); }), keyed.filter(hasElse)];
     this.globalRules = [global.filter(function (r) { return !hasElse(r); }), global.filter(hasElse)];
     this.reset();
@@ -102,6 +103,7 @@
     this.personStates = {};
     this.vars = {};
     this.score = 0;
+    this.scored = {};  // rule id -> true once its add_score has paid out
     this.turns = 0;
     this.ended = false;
     this.log = [];    // {kind:'text'|'popup', text}
@@ -263,8 +265,17 @@
     }
   };
 
-  Game.prototype._runActions = function (actions, ctx) {
-    for (var i = 0; i < actions.length; i++) this._runAction(actions[i], ctx);
+  // Each rule pays its score once per game. Several original rules are
+  // repeatable (chop the oak, put the chip back, chop again) and farm points.
+  Game.prototype._runActions = function (rule, ctx) {
+    var actions = rule.then;
+    for (var i = 0; i < actions.length; i++) {
+      if (actions[i].op === 'add_score') {
+        if (this.scored[rule.id]) continue;
+        this.scored[rule.id] = true;
+      }
+      this._runAction(actions[i], ctx);
+    }
   };
 
   // Rule lists stop only when the game ends, never on `handled`
@@ -272,7 +283,7 @@
   Game.prototype._passOverRules = function (rules, elsePass, ctx) {
     for (var i = 0; i < rules.length && !this.ended; i++) {
       var r = rules[i];
-      if (this._evalConds(r.if, elsePass)) this._runActions(r.then, ctx);
+      if (this._evalConds(r.if, elsePass)) this._runActions(r, ctx);
     }
   };
 
@@ -300,6 +311,20 @@
   // ---- verbs -------------------------------------------------------
 
   var DIR_NUM = { n: 1, s: 2, e: 3, w: 4, out: 5, in: 6, up: 7, down: 8 };
+
+  // Directions to offer: real exits plus rule-only moves. Some rooms
+  // (Strand, Galgebakke) have no exit data and move only through go-rules;
+  // the original always showed all eight directions, so those worked there.
+  Game.prototype.directions = function () {
+    var self = this, st = this.roomState(), out = [];
+    Object.keys(DIR_NUM).forEach(function (dir) {
+      var ruled = self.keyedRules[0].concat(self.keyedRules[1]).some(function (r) {
+        return self._matchKey(r, 'go', self.currentRoom, DIR_NUM[dir]);
+      });
+      if ((st && st.exits && st.exits[dir]) || ruled) out.push(dir);
+    });
+    return out;
+  };
 
   Game.prototype.go = function (dir) {
     var self = this;
@@ -402,6 +427,7 @@
       personStates: this.personStates,
       vars: this.vars,
       score: this.score,
+      scored: this.scored,
       turns: this.turns,
       ended: this.ended
     };
@@ -416,6 +442,7 @@
     this.personStates = s.personStates;
     this.vars = s.vars;
     this.score = s.score;
+    this.scored = s.scored || {};
     this.turns = s.turns || 0;
     this.ended = !!s.ended;
   };
