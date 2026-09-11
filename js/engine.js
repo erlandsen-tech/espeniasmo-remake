@@ -26,6 +26,30 @@
     NOTHING_SPECIAL: 6, PERSON_DOESNT_WANT: 7, NO_ONE_TO_TALK: 8,
     NO_ONE_TO_GIVE: 9, DARK: 10 };
 
+  // Fixes for defects in the original rules. Each throws if its rule is not found, so a
+  // regenerated game.json cannot silently drop one.
+  var OTERSKINN = 84;
+  var PATCHES = [
+    {
+      // "Du har reddet den ene broren" + wind to Strand fires on the island whenever var 28
+      // is 11. Rescuing Pal first also makes it 11, so you are blown off the island before
+      // Per can appear: unwinnable. Require the otter skin to be gone (given to Per).
+      find: function (r) {
+        return r.verb === -1 && r.if.some(function (c) { return c.op === 'room_is' && c.a === 36; }) &&
+          r.if.some(function (c) { return c.op === 'var_eq' && c.a === 28 && c.b === 11; });
+      },
+      apply: function (r) { r.if = r.if.concat([{ op: 'object_gone', a: OTERSKINN }]); }
+    }
+  ];
+
+  function applyPatches(globalRules) {
+    PATCHES.forEach(function (p) {
+      var hits = globalRules.filter(p.find);
+      if (hits.length !== 1) throw new Error('rule patch matched ' + hits.length + ' rules');
+      hits.forEach(p.apply);
+    });
+  }
+
   function Game(data, dialogue) {
     this.data = data;
     this.dialogue = dialogue || {};
@@ -38,7 +62,9 @@
     // The original loader moves every rule containing an `else` condition
     // into a second list that only runs in pass 2 (disasm/0959.asm:0000).
     var hasElse = function (r) { return r.if.some(function (c) { return c.op === 'else'; }); };
-    var keyed = data.rules_folded || [], global = data.global_rules || [];
+    var keyed = data.rules_folded || [];
+    var global = JSON.parse(JSON.stringify(data.global_rules || []));
+    applyPatches(global);
     keyed.concat(global).forEach(function (r, i) { r.id = i; });
     this.keyedRules = [keyed.filter(function (r) { return !hasElse(r); }), keyed.filter(hasElse)];
     this.globalRules = [global.filter(function (r) { return !hasElse(r); }), global.filter(hasElse)];
@@ -195,7 +221,10 @@
     switch (a.op) {
       case 'popup': this.log.push({ kind: 'popup', text: this.msg(a.a) }); break;
       case 'remove_object': this.objectLocations[a.a] = 0; break;
-      case 'place_object': this.objectLocations[a.a] = this.currentRoom; break;
+      // Only objects out of play (disasm/020a.asm:02F5).
+      case 'place_object':
+        if (!this.objectLocations[a.a]) this.objectLocations[a.a] = this.currentRoom;
+        break;
       case 'remove_person': this.personLocations[a.a] = 0; break;
       // Only brings back someone not present anywhere (disasm/020a.asm:0388).
       case 'summon_person':
@@ -220,10 +249,10 @@
   // Each rule pays its score once per game. Several original rules are
   // repeatable (chop the oak, put the chip back, chop again) and farm points.
   Game.prototype._runActions = function (rule, ctx) {
-    var actions = rule.then;
+    var actions = rule.then, paid = this.scored[rule.id];
     for (var i = 0; i < actions.length; i++) {
       if (actions[i].op === 'add_score') {
-        if (this.scored[rule.id]) continue;
+        if (paid) continue;
         this.scored[rule.id] = true;
       }
       this._runAction(actions[i], ctx);

@@ -24,4 +24,7 @@ for (const r of g.rules_folded) {
 const scoring = g.rules_folded.filter(r => r.then.some(a => a.op === 'add_score')).length;
 console.log(`${g.rules_folded.length} keyed rules, ${scoring} award score`);
 problems.forEach(p => console.log('UNREACHABLE', p));
-process.exitCode = problems.length ? 1 : 0;
+
+require('node:test')('every keyed rule is reachable from the UI', () => {
+  require('node:assert').deepStrictEqual(problems, []);
+});
