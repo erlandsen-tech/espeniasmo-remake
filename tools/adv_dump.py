@@ -108,6 +108,13 @@ def messages(d, start, count):
         out.append(joined(lines(blk, 2, 25)))
     return out
 
+def initial_vars(d):
+    # Word count then that many signed words, vars 1..n, between characters and messages.
+    # The interpreter copies these into the variable block on every (re)start.
+    o = 0xefd4 + 16*828
+    n = struct.unpack('<H', d[o:o+2])[0]
+    return list(struct.unpack('<%dh' % n, d[o+2:o+2+2*n]))
+
 def rules(d):
     n = struct.unpack('<H', d[0x15004:0x15006])[0]
     S = 0x15006
@@ -127,6 +134,7 @@ if __name__ == '__main__':
         'rooms': rooms(d),
         'objects': objects(d),
         'characters': characters(d),
+        'vars_init': initial_vars(d),              # index 0 = var 1
         'messages': messages(d, 0x123d2, 195),   # 1-based ids; 1-10 are engine defaults
         'hints': [joined(lines(d[0x14b70 + i*78:], 3, 25)) for i in range(15)],
         'rules_raw': rules(d),

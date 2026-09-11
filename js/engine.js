@@ -102,6 +102,7 @@
     this.personLocations = {};
     this.personStates = {};
     this.vars = {};
+    (this.data.vars_init || []).forEach(function (v, i) { if (v) this.vars[i + 1] = v; }, this);
     this.score = 0;
     this.scored = {};  // rule id -> true once its add_score has paid out
     this.turns = 0;

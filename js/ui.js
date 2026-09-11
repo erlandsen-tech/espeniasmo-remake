@@ -3,7 +3,7 @@
 (function () {
   'use strict';
 
-  var SAVE_KEY = 'espeniasmo_save_v1';
+  var SAVE_KEY = 'espeniasmo_save_v2';
 
   var el = {
     scene: document.getElementById('scene'),

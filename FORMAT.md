@@ -27,6 +27,7 @@ length byte. Always honour the length byte. `tools/adv_dump.py` exports all of t
 | 0xe8 | rooms | 78 x 454 | 36 used, ids are slot+1 |
 | 0x8eca | objects | 92 x 270 | ids are slot+1 |
 | 0xefd4 | characters | 16 x 828 | dialogue question options |
+| 0x12394 | initial variables | word n + n signed words | vars 1..n (n = 29), copied into the variable block on every start. 14 start at 1, e.g. 28 (progress), 15 (gallows), 27 (swimming), 4/5 (hunger clock) |
 | 0x123d2 | messages | 195 x 52 | one table, 1-based ids. 1-2 disk errors, 3-10 engine defaults, rest game text |
 | 0x14b70 | hints | 15 x 78 | "Les eventyret om..." shown by the ? verb |
 | 0x15004 | rule count | word | 1128 |
@@ -67,8 +68,12 @@ Global rule (10 bytes): condition, action. Command = (verb, k1, k2):
 | 5 look | object | 0 | show the object's state description |
 | 6 talk | person | question 1-4 | show the question, then the state's default answer |
 
-Per turn: keyed rules whose key matches, in file order; then global rules; then default handling;
-then a second pass of both lists where condition 15 (`else`) is true. Actions run only when the
+Per turn: keyed rules whose key matches, in file order; then global rules; then default handling
+unless an action said `handled`; then a second pass over both lists, which runs regardless of
+`handled`. The loader moves every rule containing condition 15 (`else`) out of the first lists into
+separate second-pass lists (`disasm/0959.asm:0000`), so pass 1 runs only non-else rules and pass 2
+only else rules, where `else` evaluates true. `handled` never stops a list; only `end_game` aborts
+the rest of the turn (`disasm/020a.asm:07D3`, `0847`). Actions run only when the
 condition holds. Conditions: 0 room_is, 1 room_not, 2 carried, 3 not_carried, 4 room_state a b,
 5 chance a%, 6 person_here, 7 person_state a b (and present), 8 person_absent, 9 object_here (room or
 carried), 10 object_state a b (and in play), 11 object_gone, 12 var_eq, 13 var_gt, 14 var_lt, 15 else.
