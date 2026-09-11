@@ -1,98 +1,125 @@
 * { box-sizing: border-box; }
+:root {
+  --bg: #1c1710; --panel: #2c2313; --panel-2: #241c10; --ink: #e8ddc8; --gold: #d1a94a;
+  --line: #6b5432; --glow: #ffe9a8;
+  --header-h: 52px; --log-h: 9.5rem;
+  /* Scene width: as large as the window height allows with the log still on screen. */
+  --scene-w: calc((100vh - var(--header-h) - var(--log-h) - 6.5rem) * 1.8);
+}
 body {
   font-family: Georgia, 'Times New Roman', serif;
-  background: #1c1710;
-  color: #e8ddc8;
+  background: var(--bg);
+  color: var(--ink);
   margin: 0;
-  padding: 0;
+  font-size: 17px;
 }
 header {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  padding: 0.5rem 1rem;
-  background: #2c2313;
-  border-bottom: 2px solid #6b5432;
-  flex-wrap: wrap;
+  display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+  min-height: var(--header-h); padding: 0.4rem 1.25rem;
+  background: var(--panel); border-bottom: 2px solid var(--line);
 }
-header h1 { font-size: 1.2rem; margin: 0; }
+header h1 { font-size: 1.35rem; margin: 0; }
+#stats { font-size: 1rem; }
 #save-controls { margin-left: auto; display: flex; gap: 0.5rem; }
 
 button {
-  font-family: inherit;
-  background: #3a2f1c;
-  color: #e8ddc8;
-  border: 1px solid #6b5432;
-  border-radius: 4px;
-  padding: 0.35rem 0.7rem;
-  cursor: pointer;
+  font-family: inherit; font-size: 1rem;
+  background: #3a2f1c; color: var(--ink);
+  border: 1px solid var(--line); border-radius: 6px;
+  padding: 0.45rem 0.8rem; cursor: pointer;
 }
 button:hover { background: #4a3c24; }
-button.active { background: #7a5c22; border-color: #d1a94a; }
+button.active { background: #7a5c22; border-color: var(--gold); color: #fff6dc; }
 
 main {
   display: grid;
-  grid-template-columns: 360px 1fr 280px;
-  gap: 1rem;
-  padding: 1rem;
+  grid-template-columns: minmax(0, var(--scene-w)) 360px;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1rem 1.25rem;
   align-items: start;
 }
 
-#scene-pane { }
-#scene-frame { position: relative; width: 360px; height: 200px; background: #000; }
-#scene { width: 360px; height: 200px; object-fit: contain; display: block; }
-#scene.talkable { cursor: pointer; box-shadow: inset 0 0 0 3px #ffe9a8; }
-#portrait-wrap { position: absolute; right: 4px; bottom: 4px; text-align: center; }
-#portrait-wrap img { width: 86px; height: 86px; object-fit: contain; background: #000; border: 2px solid #d1a94a; display: block; cursor: pointer; }
-#portrait-wrap.hidden { display: none; }
-/* Snakk is selected and someone is here to talk to: make the portrait
- * visibly interactive, since nothing else in the layout suggests it's
- * clickable otherwise. */
-#portrait-wrap.talkable img { box-shadow: 0 0 0 3px #ffe9a8, 0 0 10px 2px rgba(255, 233, 168, 0.8); }
-#portrait-wrap.talkable #person-name { color: #fff3cf; font-weight: bold; }
-.link-btn { background: none; border: none; color: #ffe9a8; text-decoration: underline; padding: 2px; font-size: 0.75rem; cursor: pointer; }
+/* The scene is the game: as wide as the column allows, but never so tall that
+ * the log below it falls off the screen. */
+#stage { min-width: 0; display: flex; flex-direction: column; }
+#room-name { align-self: stretch; margin: 0 0 0.5rem; font-size: 1.3rem; color: var(--gold); }
+#scene-frame {
+  width: 100%;
+  aspect-ratio: 360 / 200;
+  background: #000;
+  border: 2px solid var(--line);
+  border-radius: 4px;
+  overflow: hidden;
+}
+#scene { width: 100%; height: 100%; object-fit: cover; display: block; }
+#scene.talkable { cursor: pointer; }
+#scene-frame:has(#scene.talkable) { border-color: var(--glow); box-shadow: 0 0 12px rgba(255, 233, 168, 0.5); }
 
-#room-name { margin: 0.25rem 0; font-size: 1rem; color: #d1a94a; }
-
-#exits { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
-
-#text-pane { min-width: 0; }
 #log {
-  height: 420px;
+  width: 100%;
+  height: var(--log-h);
+  margin-top: 0.75rem;
   overflow-y: auto;
   background: #14100a;
-  border: 1px solid #6b5432;
-  padding: 0.6rem;
-  font-size: 0.95rem;
-  line-height: 1.4;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0.6rem 0.8rem;
+  line-height: 1.45;
 }
 .log-desc { margin-bottom: 0.5rem; opacity: 0.72; }
 .log-text { color: #cfead0; margin-bottom: 0.3rem; opacity: 0.72; }
-.log-popup { color: #ffe9a8; border: 1px solid #6b5432; padding: 0.4rem; margin: 0.4rem 0; background: #2c2313; opacity: 0.72; }
-/* The most recent turn's entries: full opacity plus a left border, so
- * what just happened is easy to spot at a glance in a long scrollback. */
+.log-popup { color: var(--glow); border: 1px solid var(--line); padding: 0.4rem; margin: 0.4rem 0; background: var(--panel); opacity: 0.72; }
 .log-latest { opacity: 1; }
-.log-latest.log-text, .log-latest.log-desc { border-left: 3px solid #d1a94a; padding-left: 0.4rem; }
-.log-latest.log-popup { border-color: #d1a94a; border-left-width: 3px; }
+.log-latest.log-text, .log-latest.log-desc { border-left: 3px solid var(--gold); padding-left: 0.5rem; }
+.log-latest.log-popup { border-color: var(--gold); border-left-width: 3px; }
 
-#side-pane { }
-#verbs { display: flex; gap: 0.4rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+#side-pane { display: flex; flex-direction: column; gap: 0.9rem; }
+#side-pane h3 { margin: 0.2rem 0 -0.3rem; font-size: 1.05rem; color: var(--gold); }
 
-#talk-menu { border: 1px solid #6b5432; padding: 0.5rem; margin-bottom: 0.75rem; background: #241c10; }
-#talk-menu.hidden { display: none; }
-#talk-questions { display: flex; flex-direction: column; gap: 0.3rem; }
+#portrait-wrap {
+  display: flex; align-items: center; gap: 0.9rem;
+  background: var(--panel-2); border: 1px solid var(--line); border-radius: 6px; padding: 0.6rem;
+}
+#portrait-wrap img {
+  width: 120px; height: 120px; object-fit: contain; background: #000;
+  border: 2px solid var(--gold); border-radius: 4px; display: block; cursor: pointer; flex: none;
+}
+#portrait-wrap.talkable { border-color: var(--glow); box-shadow: 0 0 10px rgba(255, 233, 168, 0.4); }
+#portrait-wrap.talkable img { box-shadow: 0 0 0 3px var(--glow); }
+.link-btn { background: none; border: none; color: var(--glow); text-decoration: underline; padding: 0; font-size: 1.15rem; }
+.link-btn:hover { background: none; }
+
+#verbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.45rem; }
+#verbs button { padding: 0.7rem 0.3rem; font-size: 1.05rem; }
+
+/* Compass: N/S/E/W on a cross, the vertical and in/out moves on a row below. */
+#exits {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-areas: "up n in" "w . e" "down s out";
+  gap: 0.35rem;
+}
+#exits button { padding: 0.55rem 0.2rem; }
+#exits [data-dir="n"] { grid-area: n; } #exits [data-dir="s"] { grid-area: s; }
+#exits [data-dir="e"] { grid-area: e; } #exits [data-dir="w"] { grid-area: w; }
+#exits [data-dir="up"] { grid-area: up; } #exits [data-dir="down"] { grid-area: down; }
+#exits [data-dir="in"] { grid-area: in; } #exits [data-dir="out"] { grid-area: out; }
+
+#talk-menu { border: 1px solid var(--glow); border-radius: 6px; padding: 0.6rem; background: var(--panel-2); }
+#talk-menu h3 { margin: 0 0 0.4rem; }
+#talk-questions { display: flex; flex-direction: column; gap: 0.35rem; }
 #talk-questions button { text-align: left; }
 
-.obj-grid { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
-.obj-btn { display: flex; flex-direction: column; align-items: center; width: 72px; font-size: 0.7rem; padding: 0.3rem; }
-.obj-btn img { width: 56px; height: 40px; object-fit: contain; background: #000; margin-bottom: 0.2rem; }
+.obj-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.45rem; min-height: 2rem; }
+.obj-btn { display: flex; flex-direction: column; align-items: center; padding: 0.35rem; font-size: 0.85rem; }
+.obj-btn img { width: 100%; aspect-ratio: 4 / 3; object-fit: contain; background: #000; border-radius: 3px; margin-bottom: 0.25rem; }
 
 .hidden { display: none !important; }
 
 #end-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; }
-#end-box { background: #2c2313; border: 2px solid #d1a94a; padding: 2rem; text-align: center; }
+#end-box { background: var(--panel); border: 2px solid var(--gold); padding: 2rem; text-align: center; }
 
 @media (max-width: 900px) {
   main { grid-template-columns: 1fr; }
-  #scene-frame, #scene { width: 100%; height: auto; aspect-ratio: 360 / 200; }
 }

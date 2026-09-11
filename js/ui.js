@@ -110,6 +110,7 @@
       if (dirs.indexOf(d.key) !== -1) {
         var btn = document.createElement('button');
         btn.textContent = d.label;
+        btn.dataset.dir = d.key;
         btn.addEventListener('click', function () {
           closeTalkMenu();
           pushLog(game.go(d.key));

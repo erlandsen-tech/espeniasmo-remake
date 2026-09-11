@@ -29,3 +29,8 @@ and `GT\LIB` (SETUP.IFF / STD.RES).
 `ESPEN/` and `START/` at the top level are the original zip contents, kept for
 reference; `METAWNDO/` at the top level is an empty leftover from diagnosis and
 can be deleted.
+
+## Web remake
+
+    python3 tools/serve.py          # http://127.0.0.1:8797/, caching disabled so edits show on reload
+    node --test test/*.test.js      # engine tests, including a full winning walkthrough
