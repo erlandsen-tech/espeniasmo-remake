@@ -1,0 +1,98 @@
+* { box-sizing: border-box; }
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  background: #1c1710;
+  color: #e8ddc8;
+  margin: 0;
+  padding: 0;
+}
+header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.5rem 1rem;
+  background: #2c2313;
+  border-bottom: 2px solid #6b5432;
+  flex-wrap: wrap;
+}
+header h1 { font-size: 1.2rem; margin: 0; }
+#save-controls { margin-left: auto; display: flex; gap: 0.5rem; }
+
+button {
+  font-family: inherit;
+  background: #3a2f1c;
+  color: #e8ddc8;
+  border: 1px solid #6b5432;
+  border-radius: 4px;
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+}
+button:hover { background: #4a3c24; }
+button.active { background: #7a5c22; border-color: #d1a94a; }
+
+main {
+  display: grid;
+  grid-template-columns: 360px 1fr 280px;
+  gap: 1rem;
+  padding: 1rem;
+  align-items: start;
+}
+
+#scene-pane { }
+#scene-frame { position: relative; width: 360px; height: 200px; background: #000; }
+#scene { width: 360px; height: 200px; object-fit: contain; display: block; }
+#scene.talkable { cursor: pointer; box-shadow: inset 0 0 0 3px #ffe9a8; }
+#portrait-wrap { position: absolute; right: 4px; bottom: 4px; text-align: center; }
+#portrait-wrap img { width: 80px; height: 86px; border: 2px solid #d1a94a; display: block; cursor: pointer; }
+#portrait-wrap.hidden { display: none; }
+/* Snakk is selected and someone is here to talk to: make the portrait
+ * visibly interactive, since nothing else in the layout suggests it's
+ * clickable otherwise. */
+#portrait-wrap.talkable img { box-shadow: 0 0 0 3px #ffe9a8, 0 0 10px 2px rgba(255, 233, 168, 0.8); }
+#portrait-wrap.talkable #person-name { color: #fff3cf; font-weight: bold; }
+.link-btn { background: none; border: none; color: #ffe9a8; text-decoration: underline; padding: 2px; font-size: 0.75rem; cursor: pointer; }
+
+#room-name { margin: 0.25rem 0; font-size: 1rem; color: #d1a94a; }
+
+#exits { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+
+#text-pane { min-width: 0; }
+#log {
+  height: 420px;
+  overflow-y: auto;
+  background: #14100a;
+  border: 1px solid #6b5432;
+  padding: 0.6rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+.log-desc { margin-bottom: 0.5rem; opacity: 0.72; }
+.log-text { color: #cfead0; margin-bottom: 0.3rem; opacity: 0.72; }
+.log-popup { color: #ffe9a8; border: 1px solid #6b5432; padding: 0.4rem; margin: 0.4rem 0; background: #2c2313; opacity: 0.72; }
+/* The most recent turn's entries: full opacity plus a left border, so
+ * what just happened is easy to spot at a glance in a long scrollback. */
+.log-latest { opacity: 1; }
+.log-latest.log-text, .log-latest.log-desc { border-left: 3px solid #d1a94a; padding-left: 0.4rem; }
+.log-latest.log-popup { border-color: #d1a94a; border-left-width: 3px; }
+
+#side-pane { }
+#verbs { display: flex; gap: 0.4rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+
+#talk-menu { border: 1px solid #6b5432; padding: 0.5rem; margin-bottom: 0.75rem; background: #241c10; }
+#talk-menu.hidden { display: none; }
+#talk-questions { display: flex; flex-direction: column; gap: 0.3rem; }
+#talk-questions button { text-align: left; }
+
+.obj-grid { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+.obj-btn { display: flex; flex-direction: column; align-items: center; width: 72px; font-size: 0.7rem; padding: 0.3rem; }
+.obj-btn img { width: 56px; height: 40px; object-fit: contain; background: #000; margin-bottom: 0.2rem; }
+
+.hidden { display: none !important; }
+
+#end-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; }
+#end-box { background: #2c2313; border: 2px solid #d1a94a; padding: 2rem; text-align: center; }
+
+@media (max-width: 900px) {
+  main { grid-template-columns: 1fr; }
+  #scene-frame, #scene { width: 100%; height: auto; aspect-ratio: 360 / 200; }
+}

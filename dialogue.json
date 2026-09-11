@@ -1,0 +1,370 @@
+{
+ "1": {
+  "name": "Mor",
+  "states": [
+   {
+    "questions": [
+     "Hva kan jeg gjøre?",
+     "Hvor er Per og Pål?",
+     "Skal jeg fyre litt i peisen?",
+     "Kan jeg få noe å spise?"
+    ],
+    "answer": "Her er så skrekkelig kaldt!"
+   },
+   {
+    "questions": [
+     "Hva skal jeg gjøre nå?",
+     "Har du noe mat?",
+     "Vil du klare deg alene?",
+     "Hvor er Asmo?"
+    ],
+    "answer": "Du må reise og finne Per og Pål!"
+   }
+  ]
+ },
+ "2": {
+  "name": "Rotter",
+  "states": [
+   {
+    "questions": [
+     "Er det noen her?",
+     "Husj! Gå vekk!",
+     "Kom hit, alle rotter!",
+     "Hva vil dere?"
+    ],
+    "answer": "Piiip. Piiip."
+   },
+   {
+    "questions": [
+     "Hva vil dere?",
+     "Følg etter meg!",
+     "Vil dere ha noe?",
+     "Husj! Forsvinn!"
+    ],
+    "answer": "Piiip. Piiip."
+   }
+  ]
+ },
+ "3": {
+  "name": "Rotter2",
+  "states": [
+   {
+    "questions": [
+     "Husj. Gå vekk!",
+     "Kom hit, alle rotter.",
+     "Følg etter meg.",
+     "Hva vil dere?"
+    ],
+    "answer": "Piip. Piiip."
+   },
+   {
+    "questions": [
+     "",
+     "",
+     "",
+     ""
+    ],
+    "answer": ""
+   }
+  ]
+ },
+ "4": {
+  "name": "Rotter3",
+  "states": [
+   {
+    "questions": [
+     "Husj! Gå vekk!",
+     "Kom hit, alle rotter.",
+     "Følg etter meg!",
+     "Hva vil dere?"
+    ],
+    "answer": "Piip. Piiiiip."
+   },
+   {
+    "questions": [
+     "",
+     "",
+     "",
+     ""
+    ],
+    "answer": ""
+   }
+  ]
+ },
+ "5": {
+  "name": "Kjerring",
+  "states": [
+   {
+    "questions": [
+     "Hva driver du med?",
+     "Er dette veien til Asmo?",
+     "Skal jeg hjelpe deg?",
+     "Har du sett brødrene mine?"
+    ],
+    "answer": "Au! Au! Nesa mi."
+   },
+   {
+    "questions": [
+     "Har du sett brødrene mine?",
+     "Kan jeg gjøre noe mer for deg?",
+     "Hva skal jeg gjøre for å finne brødrene?",
+     "Ha det bra så lenge!"
+    ],
+    "answer": "Ja, de lo av meg og gikk rett forbi!"
+   }
+  ]
+ },
+ "6": {
+  "name": "Heksa",
+  "states": [
+   {
+    "questions": [
+     "Har du sett noe til brødrene mine?",
+     "Hvem er du?",
+     "Hva har du i sekken?",
+     "Kan jeg hjelpe deg?"
+    ],
+    "answer": "Å, jeg er bare ei stakkars kone."
+   },
+   {
+    "questions": [
+     "",
+     "",
+     "",
+     ""
+    ],
+    "answer": ""
+   }
+  ]
+ },
+ "7": {
+  "name": "Skipet",
+  "states": [
+   {
+    "questions": [
+     "",
+     "",
+     "",
+     ""
+    ],
+    "answer": ""
+   },
+   {
+    "questions": [
+     "",
+     "",
+     "",
+     ""
+    ],
+    "answer": ""
+   }
+  ]
+ },
+ "8": {
+  "name": "Kongen",
+  "states": [
+   {
+    "questions": [
+     "Hvem er du, da?",
+     "Har brødrene mine vært her?",
+     "Kan jeg hjelpe deg med noe?",
+     "Hvor er prinsessa?"
+    ],
+    "answer": "Å, jeg er nå kongen her, jeg."
+   },
+   {
+    "questions": [
+     "Hva er det med prinsessa?",
+     "Hva hender hvis jeg taper?",
+     "Gir du meg noe om jeg vinner?",
+     "Tror du jeg kan vinne over prinsessa?"
+    ],
+    "answer": "Hun er så vanskelig å målbinde?"
+   }
+  ]
+ },
+ "9": {
+  "name": "Prinsessa",
+  "states": [
+   {
+    "questions": [
+     "Du må slippe fri bror min!",
+     "Er det du som er så god til å snakke for deg?",
+     "Huff, her var det godt og varmt.",
+     "Kongen tror at jeg vil vinne."
+    ],
+    "answer": ""
+   },
+   {
+    "questions": [
+     "Jeg holder dette skål- bruddet under.",
+     "Nei, men denne er krokete!",
+     "Da kan jeg vel få stekt skjæra mi?",
+     "Nå kan du hente bror min!"
+    ],
+    "answer": ""
+   }
+  ]
+ },
+ "10": {
+  "name": "Harer",
+  "states": [
+   {
+    "questions": [
+     "",
+     "",
+     "",
+     ""
+    ],
+    "answer": ""
+   },
+   {
+    "questions": [
+     "",
+     "",
+     "",
+     ""
+    ],
+    "answer": ""
+   }
+  ]
+ },
+ "11": {
+  "name": "Pål",
+  "states": [
+   {
+    "questions": [
+     "Hva er det du har rotet deg opp i?",
+     "Vet du hvor redd mor er for deg?",
+     "Gå hjem med en gang, jeg kommer senere!",
+     "Hvorfor kom du hit?"
+    ],
+    "answer": "Nei, jeg vet ikke, jeg!"
+   },
+   {
+    "questions": [
+     "",
+     "",
+     "",
+     ""
+    ],
+    "answer": ""
+   }
+  ]
+ },
+ "12": {
+  "name": "Brutroll",
+  "states": [
+   {
+    "questions": [
+     "Du skal få en gullmynt!",
+     "Har du sett brødrene mine?",
+     "Slipp meg forbi!",
+     "Hva vil du ha?"
+    ],
+    "answer": "Deg til middag!"
+   },
+   {
+    "questions": [
+     "Flytt deg!",
+     "Jeg har to spyd til å stange deg med!",
+     "Jeg skal knuse både marg og bein!",
+     "Nå slipper du meg forbi!"
+    ],
+    "answer": "Sauesteik er like godt, så bare kom du!"
+   }
+  ]
+ },
+ "13": {
+  "name": "Hedalstroll",
+  "states": [
+   {
+    "questions": [
+     "Hallo, troll!",
+     "Hvor skal dere?",
+     "Har dere sett bror min?",
+     "Hvorfor har dere bare ett øye?"
+    ],
+    "answer": "Jeg hørte visst musa pipe i lyngen!"
+   },
+   {
+    "questions": [
+     "Hvor er bror min?",
+     "Hva har dere gjort ham?",
+     "Hva gir dere for øyet?",
+     "Vil dere ha øyet ellet ikke?"
+    ],
+    "answer": "Litt gull får du også!"
+   }
+  ]
+ },
+ "14": {
+  "name": "Rødhette",
+  "states": [
+   {
+    "questions": [
+     "Hva er i veien?",
+     "Kan jeg hjelpe deg?",
+     "Har du sett Per og Pål?",
+     "Slutt med sutringen!"
+    ],
+    "answer": "Å, jeg er så lei meg!"
+   },
+   {
+    "questions": [
+     "Hvor skal du?",
+     "Har du sett Per og Pål?",
+     "Kan du hjelpe meg med å lete?",
+     "Pass deg for trollene!"
+    ],
+    "answer": "Ja, mor sa det samme."
+   }
+  ]
+ },
+ "15": {
+  "name": "Per",
+  "states": [
+   {
+    "questions": [
+     "Hva var det som skjedde med deg?",
+     "Kan du svømme?",
+     "Mor var så redd for deg!",
+     "Hvordan føler du deg?"
+    ],
+    "answer": "Bedre enn i skrinet!!"
+   },
+   {
+    "questions": [
+     "",
+     "",
+     "",
+     ""
+    ],
+    "answer": ""
+   }
+  ]
+ },
+ "16": {
+  "name": "Mor og sønner",
+  "states": [
+   {
+    "questions": [
+     "",
+     "",
+     "",
+     ""
+    ],
+    "answer": ""
+   },
+   {
+    "questions": [
+     "",
+     "",
+     "",
+     ""
+    ],
+    "answer": ""
+   }
+  ]
+ }
+}

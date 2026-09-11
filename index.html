@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Espen i Asmo</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>Espen i Asmo</h1>
+  <div id="stats">Poeng: <span id="score">0</span> &middot; Runder: <span id="turns">0</span></div>
+  <div id="save-controls">
+    <button id="save-btn">Lagre</button>
+    <button id="load-btn">Hent lagring</button>
+    <button id="restart-btn">Start på nytt</button>
+  </div>
+</header>
+
+<main>
+  <section id="scene-pane">
+    <h2 id="room-name"></h2>
+    <div id="scene-frame">
+      <img id="scene" alt="">
+      <div id="portrait-wrap" class="hidden">
+        <img id="portrait" alt="">
+        <button id="person-name" class="link-btn"></button>
+      </div>
+    </div>
+    <div id="exits"></div>
+  </section>
+
+  <section id="text-pane">
+    <div id="log"></div>
+  </section>
+
+  <aside id="side-pane">
+    <div id="verbs"></div>
+
+    <div id="talk-menu" class="hidden">
+      <h3>Spør om:</h3>
+      <div id="talk-questions"></div>
+    </div>
+
+    <h3>Her:</h3>
+    <div id="room-objects" class="obj-grid"></div>
+
+    <h3>Sekk:</h3>
+    <div id="inventory" class="obj-grid"></div>
+  </aside>
+</main>
+
+<div id="end-overlay" class="hidden">
+  <div id="end-box">
+    <p>Spillet er slutt.</p>
+    <button id="end-restart-btn">Start på nytt</button>
+  </div>
+</div>
+
+<script src="js/engine.js"></script>
+<script src="js/data.js"></script>
+<script src="js/ui.js"></script>
+</body>
+</html>

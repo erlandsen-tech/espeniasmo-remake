@@ -1,0 +1,613 @@
+26 global rules
+185 folded rules, 14 unfolded records
+
+=== GLOBAL (every turn) ===
+IF room_is 58:Innisekk 
+   THEN popup 68:Heksa kaster sekken på ryggen og humper avsted.
+IF room_is 36:Øya AND var_eq 27 2 AND else 
+   THEN var_set 27 1; popup 179:Idet du stiger opp av vannet blir du deg selv.; handled
+IF room_not 71:Galgebakke 
+   THEN var_set 16 1
+IF room_is 71:Galgebakke 
+   THEN var_add 16 1
+IF var_eq 4 1 
+   THEN var_add 5 1
+IF var_eq 5 25 
+   THEN popup 47:Du kjenner deg sulten.
+IF var_eq 5 35 
+   THEN popup 48:Sulten gjør deg svak, så du bør spise noe.
+IF var_eq 5 45 
+   THEN popup 49:Sulten har tappet alle krefter.Du må gi opp.; end_game
+IF person_here 2:Rotter 
+   THEN var_add 6 1
+IF person_here 3:Rotter2 
+   THEN var_add 6 1
+IF person_here 4:Rotter3 
+   THEN var_add 6 1
+IF var_eq 6 6 
+   THEN popup 40:Rottene kravler over deg og biter overalt.; end_game
+IF room_is 6:Vei AND var_eq 2 2 
+   THEN popup 43:Rottene vrimler omkring deg.
+IF room_is 5:Ved elva AND var_eq 2 2 
+   THEN popup 43:Rottene vrimler omkring deg.
+IF room_is 58:Innisekk 
+   THEN var_add 9 1
+IF var_eq 9 3 
+   THEN popup 67:Heksa tømmer deg ned i den kokende gryta.; end_game
+IF room_is 59:Kongetrapp AND else AND var_eq 12 10 AND person_state 8:Kongen 2 
+   THEN message 92:Du kan få denne fela som takk for hjelpen.; place_object 55:Fela; popup 93:Kongen holder fram ei fele.; var_set 12 15
+IF room_is 60:Prinsesserom 
+   THEN var_add 14 1
+IF room_is 60:Prinsesserom AND var_eq 14 10 
+   THEN message 97:Nå er jeg lei av deg!; popup 98:Vaktene sleper deg med til galgebakken.; goto_room 71:Galgebakke
+IF room_is 71:Galgebakke AND var_eq 16 6 
+   THEN popup 112:Bøddelen legger løkka på plass og åpner luka!!!!; end_game
+IF room_is 16:Hedalskog AND var_eq 20 1 
+   THEN summon_person 13:Hedalstroll; var_set 20 2; message 115:Ho, ho! Her lukter det kristenmanns blod!
+IF room_is 16:Hedalskog AND person_state 13:Hedalstroll 1 
+   THEN var_add 19 1
+IF room_is 16:Hedalskog AND var_eq 19 4 
+   THEN popup 116:Trollene tramper på deg. Alt blir svart.; end_game
+IF var_gt 28 20 
+   THEN popup 161:Du blir løftet opp og suser av gårde.; goto_room 40:Avslutning; handled
+IF room_is 40:Avslutning AND else 
+   THEN message 162:Hurra for Espen!!!!; popup 163:Og så levde alle lykkelig alle sine dager.; popup 164:Du har løst oppgavene, og er ferdig med historien.; popup 165:Velg SLUTT i menyen.
+IF room_is 36:Øya AND var_eq 28 11 
+   THEN popup 194:Du har reddet den ene broren.; popup 195:En kraftig vind blåser deg mot stranda!; goto_room 33:Strand
+
+=== KEYED ===
+go n from Hjemme 
+   IF var_eq 1 1 
+   THEN popup 32:Døra er låst.; handled
+go out from Hjemme 
+   IF var_eq 1 1 
+   THEN popup 32:Døra er låst.; handled
+go e from Skog 
+   IF person_here 5:Kjerring AND person_state 5:Kjerring 2 
+   THEN message 59:Farvel, Espen, og ta deg i akt for trolla.; remove_person 5:Kjerring
+go w from Skog 
+   IF person_here 5:Kjerring AND person_state 5:Kjerring 2 
+   THEN message 59:Farvel, Espen, og ta deg i akt for trolla.; remove_person 5:Kjerring
+go n from Eika       
+   IF person_absent 7:Skipet 
+   THEN popup 158:Du kan ikke gå den veien.; handled
+go n from Eika       
+   IF person_state 7:Skipet 1 
+   THEN popup 79:Skipet kan ikke seile enda.; handled
+go up from Eika       
+   IF person_absent 7:Skipet 
+   THEN popup 158:Du kan ikke gå den veien.; handled
+go up from Eika       
+   IF person_state 7:Skipet 1 
+   THEN popup 79:Skipet kan ikke seile enda.; handled
+go n from Brua 
+   IF var_eq 21 2 
+   THEN popup 134:Bukkeskinnet faller av, og du blir deg selv.; var_set 21 1
+go s from Brua 
+   IF person_absent 12:Brutroll AND var_eq 22 1 
+   THEN summon_person 12:Brutroll; handled
+go s from Brua 
+   IF person_state 12:Brutroll 1 
+   THEN popup 126:Trollet sperrer veien.; handled
+go s from Brua 
+   IF person_state 12:Brutroll 2 
+   THEN remove_person 12:Brutroll; add_score 5; add_score 10; var_set 22 2; popup 135:Du stanger til trollet som velter ned i fossen.
+go s from Sørforbru 
+   IF carried 69:Bukkeskinn 
+   THEN remove_object 69:Bukkeskinn
+go n from Strand 
+   IF room_state 32:Skrent 2 
+   THEN goto_room 32:Skrent; handled
+go s from Strand 
+   IF var_eq 27 2 
+   THEN goto_room 35:I sjøen; handled
+go s from Strand 
+   IF var_eq 27 1 
+   THEN popup 190:Du kan ikke svømme!; handled
+go e from Strand 
+   IF var_eq 24 1 
+   THEN popup 32:Døra er låst.; handled
+go e from Strand 
+   IF var_eq 24 2 
+   THEN goto_room 34:Naust; handled
+go up from Strand 
+   IF room_state 32:Skrent 2 
+   THEN goto_room 32:Skrent; handled
+go s from I brønnen 
+   IF not_carried 62:Fakkel AND object_state 62:Fakkel 1 
+   THEN popup 155:Du snubler i mørket.; end_game
+go s from Prinsesserom 
+   IF var_eq 4 1 
+   THEN var_set 14 1
+go out from Prinsesserom 
+   IF var_eq 4 1 
+   THEN var_set 14 1
+go s from Galgebakke 
+   IF var_gt 15 1 
+   THEN goto_room 57:Haremark; handled
+go s from Galgebakke 
+   IF var_eq 15 1 
+   THEN popup 111:Bøddelen sperrer veien.; handled
+take Fyrstikker 
+   IF room_is 1:Hjemme 
+   THEN set_object_state 7:Vinduskarm 1
+take Sovedrikk 
+   IF room_is 1:Hjemme 
+   THEN set_object_state 7:Vinduskarm 3
+take Tau 
+   IF room_is 32:Skrent AND room_state 32:Skrent 2 
+   THEN set_room_state 32 1
+take Bærtue 
+   IF  
+   THEN popup 193:Tyttebærene smaker syrlig og friskt. De metter.; remove_object 29:Bærtue; place_object 25:Tyttebær; var_set 5 1; handled
+take Hare 
+   IF object_here 39:Hare 
+   THEN popup 94:Haren vrir seg ut av hendene dine.; handled
+take Trolløye 
+   IF  
+   THEN 
+take Kalvehale 
+   IF  
+   THEN popup 169:Idet du tar i kalvehalen begynner den å vokse.; add_score 10; remove_object 74:Kalvehale; summon_person 15:Per; message 181:Hei , broder!!; handled
+drop Fakkel 
+   IF object_state 62:Fakkel 2 
+   THEN set_object_state 62:Fakkel 1; popup 148:Fakkelen slokner idet den tar bakken.
+drop Gullmynt 
+   IF room_is 37:Ved brønnen 
+   THEN popup 153:Mynten lager et svakt plask nede i brønnen.; popup 154:Du merker en bevegelse ved muren.; place_object 86:Mur; add_score 5; remove_object 66:Gullmynt; handled
+drop Bukkeskinn 
+   IF var_eq 21 2 
+   THEN popup 134:Bukkeskinnet faller av, og du blir deg selv.; var_set 21 1
+use Fyrstikker on 0 
+   IF room_is 1:Hjemme AND room_state 1:Hjemme 3 
+   THEN set_person_state 1:Mor 2; add_score 5; popup 25:Det brenner lystig i peisen.; set_object_state 1:Peisen 2; set_room_state 1 2; handled
+use Fyrstikker on 0 
+   IF object_here 62:Fakkel AND object_state 62:Fakkel 1 
+   THEN popup 149:Fakkelen tar fyr med det samme.; set_object_state 62:Fakkel 2; add_score 5; handled
+use Flatbrød on 0 
+   IF object_here 4:Flatbrød 
+   THEN popup 35:Tørt er det, men det metter.; var_set 5 1
+use Flatbrød on 0 
+   IF object_state 4:Flatbrød 3 
+   THEN popup 36:Så var det slutt på flatbrødet.; remove_object 4:Flatbrød
+use Flatbrød on 0 
+   IF object_state 4:Flatbrød 2 
+   THEN set_object_state 4:Flatbrød 3
+use Flatbrød on 0 
+   IF object_state 4:Flatbrød 1 
+   THEN set_object_state 4:Flatbrød 2
+use Flatbrød on 0 
+   IF var_eq 5 1 
+   THEN handled
+use Sovedrikk on 0 
+   IF room_is 12:Eika       AND var_eq 10 5 
+   THEN popup 76:Du sovner øyeblikkelig.; remove_object 6:Sovedrikk; popup 75:I søvne hører du banking og hamring.; add_score 5; place_object 50:Skipet; summon_person 7:Skipet; goto_room 12:Eika      ; handled
+use Sovedrikk on 0 
+   IF object_here 6:Sovedrikk 
+   THEN popup 76:Du sovner øyeblikkelig.; goto_room 70:Drømmeland; popup 77:I drømme føler du at du svever.; goto_room 74:Kjeller; popup 189:Du våkner i kjelleren hjemme.; handled
+use Seilduk on 0 
+   IF room_is 13:Skip 
+   THEN remove_object 8:Seilduk; set_person_state 7:Skipet 2; set_object_state 50:Skipet 2; popup 73:Du heiser seilet du har med deg.; add_score 5; handled
+use Seilduk on 0 
+   IF room_is 12:Eika       
+   THEN remove_object 8:Seilduk; set_person_state 7:Skipet 2; popup 73:Du heiser seilet du har med deg.; add_score 5; handled
+use Ved on 0 
+   IF room_is 1:Hjemme AND room_state 1:Hjemme 1 
+   THEN remove_object 10:Ved; set_room_state 1 3; set_object_state 1:Peisen 3; add_score 5; popup 28:Veden er stablet opp i peisen.; handled
+use Nøkkel on 0 
+   IF room_is 1:Hjemme AND var_eq 1 1 
+   THEN remove_object 13:Nøkkel; popup 31:Du har låst opp døra.; add_score 5; var_set 1 2; handled
+use Øks on 0 
+   IF room_is 12:Eika       
+   THEN popup 78:Ei flis spretter av eika.; place_object 38:Flisa; add_score 5; handled
+use Øks on 0 
+   IF person_here 5:Kjerring AND person_state 5:Kjerring 1 
+   THEN popup 60:Stubben splintres og for- svinner. Kona reiser seg.; add_score 5; set_person_state 5:Kjerring 2; message 85:Det skal du ha denne fløyta for.; remove_object 32:Stubbe; remove_object 31:Konehode; place_object 22:Fløyta; handled
+use Øks on 0 
+   IF room_is 16:Hedalskog AND person_state 13:Hedalstroll 1 
+   THEN message 119:AU, AU !; popup 117:Trollet mister øyet!; set_person_state 13:Hedalstroll 2; add_score 5; place_object 73:Trolløye; handled
+use Øks on 0 
+   IF room_is 16:Hedalskog AND person_state 13:Hedalstroll 2 
+   THEN message 119:AU, AU !; add_score 1; handled
+use Øks on 0 
+   IF room_is 30:Brua AND person_state 12:Brutroll 1 
+   THEN message 130:Frekk er du, pusling!; popup 131:Trollet drar deg ned i fossen.; end_game
+use Øks on 0 
+   IF room_is 30:Brua AND person_state 12:Brutroll 2 
+   THEN popup 132:Du får dårlig tak med bukkefoten!; handled
+use Øks on 0 
+   IF room_is 32:Skrent 
+   THEN popup 143:Treet er altfor hardt.; handled
+use Kniv on 0 
+   IF person_here 5:Kjerring AND person_state 5:Kjerring 1 
+   THEN popup 187:Kniven er for liten til å kløve stubben med.; message 188:Du må finne på noe bedre, gutten min!; handled
+use Kniv on 0 
+   IF person_here 6:Heksa 
+   THEN remove_object 16:Kniv; popup 66:Heksa tar deg og stapper deg i sekken.; goto_room 58:Innisekk; popup 68:Heksa kaster sekken på ryggen og humper avsted.; handled
+use Kniv on 0 
+   IF room_is 58:Innisekk 
+   THEN popup 69:Du skjærer et hull i sekken og faller ut.; goto_room 15:Veikryss; remove_object 51:Heksesekk; remove_object 52:Heksa; place_object 53:Brødet; remove_person 6:Heksa; add_score 5; handled
+use Fløyta on 0 
+   IF carried 22:Fløyta 
+   THEN popup 46:Du hører en vakker fløytetone.
+use Fløyta on 0 
+   IF room_is 7:Landsby AND var_eq 2 1 
+   THEN popup 42:Rottene samler seg rundt deg.; set_person_state 2:Rotter 2; summon_person 4:Rotter3; summon_person 3:Rotter2; var_set 2 2; add_score 5
+use Fløyta on 0 
+   IF room_is 5:Ved elva AND person_here 4:Rotter3 
+   THEN popup 44:Rottene styrter ut i elva og blir borte.; var_set 2 3; remove_person 4:Rotter3; remove_person 2:Rotter; remove_person 3:Rotter2; popup 45:En mann kommer fra byen og legger fra seg et tau.; place_object 23:Tau; add_score 5; handled
+use Fløyta on 0 
+   IF room_is 56:Kongsgård AND var_eq 12 5 
+   THEN popup 83:Harene forsvinner inn i kassen.; set_object_state 54:Kassen 2; remove_person 10:Harer; var_set 12 10; set_person_state 8:Kongen 2; handled
+use Fløyta on 0 
+   IF room_is 57:Haremark AND var_eq 12 5 
+   THEN popup 84:Harene farer i retning av kassen sin.; var_set 12 10; remove_person 10:Harer; set_object_state 54:Kassen 2; remove_object 39:Hare; set_person_state 8:Kongen 2; handled
+use Fløyta on 0 
+   IF room_is 57:Haremark AND var_eq 12 1 
+   THEN popup 82:Harene spretter mot deg.; set_person_state 10:Harer 2; add_score 5; var_set 12 5; handled
+use Fløyta on 0 
+   IF var_eq 4 1 
+   THEN handled
+use Tau on 0 
+   IF room_is 32:Skrent AND room_state 32:Skrent 1 
+   THEN set_room_state 32 2; remove_object 23:Tau; place_object 23:Tau; add_score 5; handled
+use Rotta on 0 
+   IF carried 24:Rotta 
+   THEN popup 52:Rotta biter deg vennlig i fingeren.; handled
+use Tyttebær on 0 
+   IF carried 25:Tyttebær 
+   THEN popup 51:Bærene er syrlige og friske.; remove_object 25:Tyttebær; var_set 5 1; handled
+use Bukkehorn on 0 
+   IF room_is 60:Prinsesserom AND var_eq 13 15 
+   THEN message 106:Nei, nå vet jeg ikke.....; var_set 13 20; add_score 5; handled
+use Skålbrudd on 0 
+   IF room_is 60:Prinsesserom AND var_eq 13 10 
+   THEN message 104:Du er krokete i ord, du!; var_set 13 15; handled
+use Flisa on 0 
+   IF room_is 12:Eika       
+   THEN remove_object 38:Flisa; popup 74:Flisa smetter på plass i hakket den kom fra.; var_set 10 5; handled
+use Skjære on 0 
+   IF room_is 60:Prinsesserom AND var_eq 13 5 
+   THEN message 103:Fettet renner av den!; var_set 13 10; handled
+use Brødet on 0 
+   IF object_here 53:Brødet 
+   THEN popup 65:Mmm! Ferskt brød.; var_set 5 1
+use Brødet on 0 
+   IF object_state 53:Brødet 3 
+   THEN remove_object 53:Brødet
+use Brødet on 0 
+   IF object_state 53:Brødet 2 
+   THEN set_object_state 53:Brødet 3
+use Brødet on 0 
+   IF object_state 53:Brødet 1 
+   THEN set_object_state 53:Brødet 2
+use Brødet on 0 
+   IF var_eq 5 1 
+   THEN handled
+use Fela on 0 
+   IF var_eq 4 1 
+   THEN popup 109:Du lager vakker musikk med fela!; handled
+use Fela on 0 
+   IF room_is 71:Galgebakke 
+   THEN popup 110:Alle omkring deg danser som gale og faller om.; var_set 15 10; handled
+use Pølsa on 0 
+   IF object_here 56:Pølsa 
+   THEN popup 80:Pølsa smaker like godt som den lukter.; var_set 5 1
+use Pølsa on 0 
+   IF object_state 56:Pølsa 3 
+   THEN popup 81:Det var resten av pølsa.; remove_object 56:Pølsa
+use Pølsa on 0 
+   IF object_state 56:Pølsa 2 
+   THEN set_object_state 56:Pølsa 3
+use Pølsa on 0 
+   IF object_state 56:Pølsa 1 
+   THEN set_object_state 56:Pølsa 2
+use Pølsa on 0 
+   IF var_eq 5 1 
+   THEN handled
+use Glassnøkkel on 0 
+   IF room_is 33:Strand 
+   THEN popup 31:Du har låst opp døra.; var_set 24 2; add_score 5; remove_object 63:Glassnøkkel; handled
+use Gullmynt on 0 
+   IF room_is 37:Ved brønnen 
+   THEN popup 153:Mynten lager et svakt plask nede i brønnen.; popup 154:Du merker en bevegelse ved muren.; place_object 86:Mur; add_score 5; remove_object 66:Gullmynt; handled
+use Spade on 0 
+   IF room_is 36:Øya 
+   THEN popup 166:Du har gravd et hull i torva.; add_score 5; place_object 89:Hull; handled
+use Spade on 0 
+   IF room_not 36:Øya 
+   THEN popup 176:Nei, her nytter det lite å grave.; handled
+use Bukkeskinn on 0 
+   IF room_is 30:Brua 
+   THEN popup 133:Du blir til en diger bukk!; var_set 21 2; set_person_state 12:Brutroll 2; handled
+use Korga on 0 
+   IF carried 70:Korga 
+   THEN popup 136:Det vil nok ikke eieren like!; handled
+use Fisken on 0 
+   IF var_eq 27 2 
+   THEN popup 192:Herlig fersk fisk!; remove_object 71:Fisken; var_set 5 1; handled
+use Fisken on 0 
+   IF var_eq 27 1 
+   THEN popup 191:Du liker ikke rå fisk!; handled
+use Tørrfisk on 0 
+   IF  
+   THEN popup 147:Å, det metter.; remove_object 77:Tørrfisk; var_set 5 1; handled
+use Kake on 0 
+   IF  
+   THEN popup 160:Herlig!!; remove_object 78:Kake; var_set 5 1; handled
+use Ost on 0 
+   IF  
+   THEN popup 147:Å, det metter.; var_set 5 1; remove_object 80:Ost; handled
+use Kjeks on 0 
+   IF  
+   THEN remove_object 81:Kjeks; var_set 5 1; popup 147:Å, det metter.; handled
+use Pølsesnabb on 0 
+   IF  
+   THEN popup 147:Å, det metter.; remove_object 82:Pølsesnabb; var_set 5 1; handled
+use Rødt eple on 0 
+   IF  
+   THEN popup 184:Etter en bit av eplet blir du så merkelig sl...; end_game
+use Oterskinn on 0 
+   IF room_is 33:Strand 
+   THEN popup 145:Du blir til en vakker oter.; var_set 27 2; add_score 5; handled
+use Blåserør on 0 
+   IF object_here 72:Skrinet AND object_state 72:Skrinet 1 
+   THEN set_object_state 72:Skrinet 2; add_score 5; popup 180:Når du blåser i nøkkel- hullet går skrinet opp.; handled
+give Flatbrød to 0 
+   IF room_is 1:Hjemme AND person_state 1:Mor 1 
+   THEN message 37:Du tenker bare på mat. Jeg fryser!; handled
+give Flatbrød to 0 
+   IF room_is 1:Hjemme AND person_state 1:Mor 2 
+   THEN message 38:Signe deg, gutten min!; set_object_state 4:Flatbrød 3; handled
+give Flatbrød to 0 
+   IF person_here 5:Kjerring AND person_state 5:Kjerring 1 
+   THEN message 56:Jeg vil løs først!; handled
+give Flatbrød to 0 
+   IF person_here 5:Kjerring AND person_state 5:Kjerring 2 AND object_state 4:Flatbrød 3 
+   THEN message 53:Takk og takk. Ta fløyta her, den kan hjelpe deg.; place_object 22:Fløyta; add_score 5; remove_object 4:Flatbrød; handled
+give Flatbrød to 0 
+   IF person_here 5:Kjerring AND person_state 5:Kjerring 2 AND object_state 4:Flatbrød 2 
+   THEN message 53:Takk og takk. Ta fløyta her, den kan hjelpe deg.; place_object 22:Fløyta; add_score 5; set_object_state 4:Flatbrød 3; handled
+give Flatbrød to 0 
+   IF person_here 5:Kjerring AND person_state 5:Kjerring 2 AND object_state 4:Flatbrød 1 
+   THEN set_object_state 4:Flatbrød 2; message 53:Takk og takk. Ta fløyta her, den kan hjelpe deg.; add_score 5; place_object 22:Fløyta; handled
+give Flatbrød to 0 
+   IF person_here 6:Heksa 
+   THEN popup 71:Tvi vøre for mat!; handled
+give Korga to 0 
+   IF person_here 14:Rødhette 
+   THEN message 120:Takk og takk!; remove_object 70:Korga; set_person_state 14:Rødhette 2; add_score 5; handled
+give Trolløye to 0 
+   IF room_is 16:Hedalskog 
+   THEN message 120:Takk og takk!; popup 121:Trollene kaster fra seg gavene, og forsvinner.; place_object 66:Gullmynt; place_object 69:Bukkeskinn; remove_object 73:Trolløye; remove_person 13:Hedalstroll; add_score 5; handled
+give Trolløye to 0 
+   IF person_here 12:Brutroll 
+   THEN message 150:Jeg har to fra før!; handled
+give Oterskinn to 0 
+   IF person_here 15:Per 
+   THEN message 120:Takk og takk!; var_add 28 10; popup 172:Per smetter inn i skinnet og svømmer nordover.; add_score 10; remove_person 15:Per; remove_object 84:Oterskinn; handled
+look Hylla 
+   IF object_state 2:Hylla 1 
+   THEN popup 26:Det ligger en nøkkel på hylla.; set_object_state 2:Hylla 2; place_object 13:Nøkkel; handled
+look Vegghylle 
+   IF object_state 5:Vegghylle 1 
+   THEN popup 27:Du ser litt flatbrød i hylla.; set_object_state 5:Vegghylle 2; place_object 4:Flatbrød; handled
+look Vinduskarm 
+   IF object_state 7:Vinduskarm 1 
+   THEN popup 30:Det står en flaske der.; place_object 6:Sovedrikk; handled
+look Vinduskarm 
+   IF object_state 7:Vinduskarm 2 
+   THEN place_object 3:Fyrstikker; popup 29:Du ser en eske fyrstikker i vinduskarmen.; handled
+look Husvegg 
+   IF room_is 2:Tun 
+   THEN place_object 19:Lapp; remove_object 20:Husvegg
+look Veikant 
+   IF room_is 3:Fjellside AND not_carried 16:Kniv 
+   THEN popup 39:Du finner en kniv i veikanten.; place_object 16:Kniv; remove_object 21:Veikant; handled
+look Horntre 
+   IF room_is 6:Vei 
+   THEN remove_object 26:Horntre; place_object 27:Bukkehorn
+look Bærtue 
+   IF room_is 6:Vei 
+   THEN remove_object 29:Bærtue; place_object 25:Tyttebær
+look Konehode 
+   IF person_here 5:Kjerring 
+   THEN message 61:Frekkas! Hjelp meg heller løs.; handled
+look Fallhol 
+   IF object_gone 37:Skålbrudd 
+   THEN popup 72:Du finner en bit av en skål under treet.; place_object 37:Skålbrudd; handled
+look Pung 
+   IF object_gone 58:Bønner 
+   THEN place_object 58:Bønner; popup 95:Tre bønner faller ut av pungen.; handled
+look Grøft 
+   IF object_gone 57:Pung 
+   THEN popup 96:Det ligger en pung i veikanten.; place_object 57:Pung; handled
+look Flaggermus 
+   IF object_gone 63:Glassnøkkel 
+   THEN place_object 63:Glassnøkkel; popup 157:Den har en nøkkel i en snor om halsen.; handled
+look Skrinet 
+   IF object_state 72:Skrinet 2 AND object_gone 74:Kalvehale 
+   THEN popup 178:I skrinet ligger en kalvehale.; place_object 74:Kalvehale; handled
+look Nausttak 
+   IF object_gone 77:Tørrfisk 
+   THEN popup 156:En tørrfisk henger i tak- bjelken.; place_object 77:Tørrfisk; handled
+look Naust 
+   IF var_eq 24 1 
+   THEN popup 32:Døra er låst.; handled
+look Naust 
+   IF var_eq 24 2 
+   THEN popup 144:Døra er åpen.; handled
+look Båten 
+   IF object_gone 84:Oterskinn 
+   THEN popup 146:Du finner et oterskinn.; place_object 84:Oterskinn; handled
+look Mur 
+   IF  
+   THEN popup 151:Du finner en fakkel.; place_object 62:Fakkel; remove_object 86:Mur; handled
+look Hulevegg 
+   IF  
+   THEN popup 152:Krafsingen din har vekket en flaggermus.; place_object 65:Flaggermus; remove_object 87:Hulevegg; handled
+look Hull 
+   IF object_gone 72:Skrinet 
+   THEN popup 177:Nede i hullet ser du et skrin.; place_object 72:Skrinet; handled
+look Strandstein 
+   IF  
+   THEN popup 182:En spade er halvt ned- gravd i sanden.; place_object 68:Spade; remove_object 90:Strandstein; handled
+look Korgbusk 
+   IF  
+   THEN popup 183:Noen har glemt ei korg bak busken.; remove_object 91:Korgbusk; place_object 70:Korga; handled
+look Kryssbusk 
+   IF object_state 92:Kryssbusk 2 
+   THEN popup 185:Du finner et blankt rør.; place_object 88:Blåserør; set_object_state 92:Kryssbusk 1; handled
+talk Mor q2 
+   IF person_state 1:Mor 1 
+   THEN message 21:De har gått til Asmo, og ikke kommet tilbake.; handled
+talk Mor q2 
+   IF person_state 1:Mor 2 
+   THEN message 22:Rottene har vel spist opp det som var i kjelleren.; handled
+talk Mor q3 
+   IF person_state 1:Mor 1 
+   THEN message 33:Du bare prater!; handled
+talk Mor q3 
+   IF person_state 1:Mor 2 
+   THEN message 23:Ja, bare finn guttene mine, så blir alt bra.; handled
+talk Mor q4 
+   IF person_state 1:Mor 1 
+   THEN message 34:Ete vil du, men arbeide vil du ikke.; handled
+talk Mor q4 
+   IF person_state 1:Mor 2 
+   THEN message 24:Følg stien nordover.; handled
+talk Kjerring q2 
+   IF person_state 5:Kjerring 1 
+   THEN message 54:Kjære vene, hjelp meg, så skal jeg hjelpe deg.; handled
+talk Kjerring q2 
+   IF person_state 5:Kjerring 2 
+   THEN message 58:Ja, jeg har ikke spist på  tre dager.; handled
+talk Kjerring q3 
+   IF person_state 5:Kjerring 1 
+   THEN message 54:Kjære vene, hjelp meg, så skal jeg hjelpe deg.; handled
+talk Kjerring q3 
+   IF person_state 5:Kjerring 2 
+   THEN message 57:Hogg flis, sov og seil.; handled
+talk Kjerring q4 
+   IF person_state 5:Kjerring 1 
+   THEN message 55:Du spør som du har vett til!; handled
+talk Kjerring q4 
+   IF person_state 5:Kjerring 2 
+   THEN message 59:Farvel, Espen, og ta deg i akt for trolla.; handled
+talk Heksa q1 
+   IF person_here 6:Heksa 
+   THEN message 62:Ja, du finner spor etter dem nede i sekken min.; handled
+talk Heksa q3 
+   IF person_state 6:Heksa 1 
+   THEN message 63:Det ligger noe fint til deg i sekken.; handled
+talk Heksa q4 
+   IF person_state 6:Heksa 1 
+   THEN message 64:Ja, kryp inn i sekken og hent nista mi.; handled
+talk Kongen q2 
+   IF person_state 8:Kongen 1 
+   THEN message 86:Ja, den ene sitter i fangehullet til prinsessa; handled
+talk Kongen q2 
+   IF person_state 8:Kongen 2 
+   THEN message 89:Å, det blir vel galgen på deg!; handled
+talk Kongen q3 
+   IF person_state 8:Kongen 1 
+   THEN message 87:Du kan få samlet harene mine.; handled
+talk Kongen q3 
+   IF person_state 8:Kongen 2 
+   THEN message 90:Bror din skal du få, om du klarer det.; handled
+talk Kongen q4 
+   IF person_state 8:Kongen 1 
+   THEN message 88:Å, hun sitter inne i kammerset sitt.; handled
+talk Kongen q4 
+   IF person_state 8:Kongen 2 
+   THEN message 91:Ja, hvis du har med de rette tingene.; handled
+talk Prinsessa q1 
+   IF person_state 9:Prinsessa 2 AND var_lt 13 10 
+   THEN message 97:Nå er jeg lei av deg!; popup 98:Vaktene sleper deg med til galgebakken.; goto_room 71:Galgebakke; handled
+talk Prinsessa q1 
+   IF person_state 9:Prinsessa 1 
+   THEN message 99:Nei, men han får se på at vi henger deg!; popup 98:Vaktene sleper deg med til galgebakken.; goto_room 71:Galgebakke; handled
+talk Prinsessa q1 
+   IF person_state 9:Prinsessa 2 AND carried 37:Skålbrudd AND var_eq 13 10 
+   THEN message 104:Du er krokete i ord, du!; var_set 13 15; handled
+talk Prinsessa q1 
+   IF person_state 9:Prinsessa 2 AND not_carried 37:Skålbrudd 
+   THEN message 125:Du har ikke!; popup 98:Vaktene sleper deg med til galgebakken.; goto_room 71:Galgebakke; handled
+talk Prinsessa q2 
+   IF person_state 9:Prinsessa 2 AND var_lt 13 15 
+   THEN message 97:Nå er jeg lei av deg!; popup 98:Vaktene sleper deg med til galgebakken.; goto_room 71:Galgebakke; handled
+talk Prinsessa q2 
+   IF person_state 9:Prinsessa 1 
+   THEN message 100:Ja, og du trenger visst å få strekt halsen litt.; popup 98:Vaktene sleper deg med til galgebakken.; goto_room 71:Galgebakke; handled
+talk Prinsessa q2 
+   IF person_state 9:Prinsessa 2 AND carried 27:Bukkehorn AND var_eq 13 15 
+   THEN message 106:Nei, nå vet jeg ikke.....; var_set 13 20; handled
+talk Prinsessa q2 
+   IF person_state 9:Prinsessa 2 AND not_carried 27:Bukkehorn 
+   THEN message 125:Du har ikke!; popup 98:Vaktene sleper deg med til galgebakken.; goto_room 71:Galgebakke; handled
+talk Prinsessa q3 
+   IF person_state 9:Prinsessa 2 AND var_gt 13 5 
+   THEN message 97:Nå er jeg lei av deg!; popup 98:Vaktene sleper deg med til galgebakken.; goto_room 71:Galgebakke; handled
+talk Prinsessa q3 
+   IF person_state 9:Prinsessa 2 AND carried 40:Skjære AND var_eq 13 5 
+   THEN message 103:Fettet renner av den!; var_set 13 10; handled
+talk Prinsessa q3 
+   IF person_state 9:Prinsessa 1 
+   THEN message 101:Det er varmere i glohaugen!; var_set 13 5; set_person_state 9:Prinsessa 2; handled
+talk Prinsessa q3 
+   IF person_state 9:Prinsessa 2 AND not_carried 40:Skjære 
+   THEN message 125:Du har ikke!; popup 98:Vaktene sleper deg med til galgebakken.; goto_room 71:Galgebakke; handled
+talk Prinsessa q4 
+   IF person_state 9:Prinsessa 2 AND var_lt 13 20 
+   THEN message 97:Nå er jeg lei av deg!; popup 98:Vaktene sleper deg med til galgebakken.; goto_room 71:Galgebakke; handled
+talk Prinsessa q4 
+   IF person_state 9:Prinsessa 1 
+   THEN message 102:Ja, en tur i galgen vil du vinne!; popup 98:Vaktene sleper deg med til galgebakken.; goto_room 71:Galgebakke; handled
+talk Prinsessa q4 
+   IF person_state 9:Prinsessa 2 AND var_eq 13 20 
+   THEN message 114:Pål venter  på deg ved harekassen.; popup 105:Prinsessa gir seg ende over, og går sin veg.; remove_person 9:Prinsessa; var_set 13 25; summon_person 11:Pål; add_score 10; handled
+talk Pål q3 
+   IF person_state 11:Pål 1 
+   THEN message 108:Javel. Jeg skal skynde meg hjem til mor.; remove_person 11:Pål; var_add 28 10; popup 107:Pål tusler av gårde, og gir seg på hjemvei.; handled
+talk Brutroll q1 
+   IF person_state 12:Brutroll 1 
+   THEN message 127:Jeg vil ete deg!; handled
+talk Brutroll q2 
+   IF person_state 12:Brutroll 1 
+   THEN message 128:Her slipper  bare troll forbi!; handled
+talk Brutroll q3 
+   IF person_state 12:Brutroll 1 
+   THEN message 129:HA !; handled
+talk Hedalstroll q1 
+   IF room_is 16:Hedalskog AND person_state 13:Hedalstroll 2 
+   THEN message 122:Vi har ham ikke!; handled
+talk Hedalstroll q2 
+   IF room_is 16:Hedalskog AND person_state 13:Hedalstroll 2 
+   THEN message 123:Han henger etter kalven.; handled
+talk Hedalstroll q3 
+   IF room_is 16:Hedalskog AND person_state 13:Hedalstroll 2 
+   THEN message 124:Du får hjelp over brua.; handled
+talk Rødhette q1 
+   IF person_state 14:Rødhette 1 
+   THEN message 137:Jeg har mistet korga mi.; handled
+talk Rødhette q1 
+   IF person_state 14:Rødhette 2 
+   THEN message 139:Til bestemor med mat.; handled
+talk Rødhette q2 
+   IF person_state 14:Rødhette 1 
+   THEN message 138:Ja, finn korga!; handled
+talk Rødhette q2 
+   IF person_state 14:Rødhette 2 
+   THEN message 140:Nei, men jeg så et troll med et lite skrin.; handled
+talk Rødhette q3 
+   IF person_state 14:Rødhette 2 
+   THEN message 141:Nei, nå må jeg gå!; remove_person 14:Rødhette; popup 142:Rødhette slipper noe og skynder seg inn i skogen.; place_object 78:Kake; handled
+talk Per q1 
+   IF  
+   THEN message 173:Jeg ble forhekset.; handled
+talk Per q2 
+   IF  
+   THEN message 174:Nei, jeg kommer nok aldri herfra.; handled
+talk Per q3 
+   IF  
+   THEN message 175:Jeg lengter slik hjem!; handled

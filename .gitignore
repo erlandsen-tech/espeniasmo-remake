@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+.DS_Store
+.claude/
+dosbox.log
+# Generated full-resolution art masters (~270 MB). Served copies are built into assets/web/.
+assets/new/
