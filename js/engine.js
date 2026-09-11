@@ -193,10 +193,9 @@
       case 'room_state': return (this.roomStates[c.a] || 1) === c.b;
       case 'chance': return Math.random() * 100 < c.a;
       case 'person_here': return this.personLocations[c.a] === this.currentRoom;
-      case 'person_state':
-        return this.personLocations[c.a] === this.currentRoom &&
-          (this.personStates[c.a] || 1) === c.b;
-      case 'person_absent': return this.personLocations[c.a] !== this.currentRoom;
+      // Both test "in play anywhere", not "in this room" (disasm/020a.asm:06E4, 071A).
+      case 'person_state': return this.personLocations[c.a] > 0 && (this.personStates[c.a] || 1) === c.b;
+      case 'person_absent': return !(this.personLocations[c.a] > 0);
       case 'object_here':
         return this.objectLocations[c.a] === 'inv' || this.objectLocations[c.a] === this.currentRoom;
       case 'object_state':

@@ -75,7 +75,7 @@ separate second-pass lists (`disasm/0959.asm:0000`), so pass 1 runs only non-els
 only else rules, where `else` evaluates true. `handled` never stops a list; only `end_game` aborts
 the rest of the turn (`disasm/020a.asm:07D3`, `0847`). Actions run only when the
 condition holds. Conditions: 0 room_is, 1 room_not, 2 carried, 3 not_carried, 4 room_state a b,
-5 chance a%, 6 person_here, 7 person_state a b (and present), 8 person_absent, 9 object_here (room or
+5 chance a%, 6 person_here, 7 person_state a b (and in play anywhere, not necessarily here), 8 person_absent (not in play anywhere), 9 object_here (room or
 carried), 10 object_state a b (and in play), 11 object_gone, 12 var_eq, 13 var_gt, 14 var_lt, 15 else.
 Actions: 0 popup message a, 1 remove_object, 2 place_object (into current room), 3 remove_person,
 4 summon_person (to home room), 5 goto_room, 6 message a (text pane), 7 set_room_state,

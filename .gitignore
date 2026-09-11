@@ -5,3 +5,4 @@ __pycache__/
 dosbox.log
 # Generated full-resolution art masters (~270 MB). Served copies are built into assets/web/.
 assets/new/
+.playwright-mcp/
