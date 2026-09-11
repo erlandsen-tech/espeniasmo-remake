@@ -43,7 +43,7 @@ main {
 #scene { width: 360px; height: 200px; object-fit: contain; display: block; }
 #scene.talkable { cursor: pointer; box-shadow: inset 0 0 0 3px #ffe9a8; }
 #portrait-wrap { position: absolute; right: 4px; bottom: 4px; text-align: center; }
-#portrait-wrap img { width: 80px; height: 86px; border: 2px solid #d1a94a; display: block; cursor: pointer; }
+#portrait-wrap img { width: 86px; height: 86px; object-fit: contain; background: #000; border: 2px solid #d1a94a; display: block; cursor: pointer; }
 #portrait-wrap.hidden { display: none; }
 /* Snakk is selected and someone is here to talk to: make the portrait
  * visibly interactive, since nothing else in the layout suggests it's
