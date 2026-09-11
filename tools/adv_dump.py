@@ -78,8 +78,12 @@ def characters(d):
         # against ESPENP art for 10 of 16 characters, e.g. Skipet -> 15 is a
         # Viking ship, Kongen -> 17 is a crowned king in red robes).
         portrait = words(b[288:], 1)[0]
+        # Start location (signed word 824: negative = absent, summon_person moves them to
+        # its absolute value) and start state (word 826), copied in on every restart.
+        home, start_state = struct.unpack('<hH', b[824:828])
         out.append({'id': i+1, 'name': pstr(b, 27).strip(), 'questions': qs,
-                    'portrait': portrait, 'raw': b[504:].hex()})
+                    'portrait': portrait, 'home': home, 'start_state': start_state,
+                    'raw': b[504:].hex()})
     return out
 
 

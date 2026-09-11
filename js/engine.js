@@ -13,55 +13,6 @@
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
-  // Character home rooms: used both as each character's starting location
-  // (see PRESENT_AT_START below) and as the `summon_person` action's target.
-  //
-  // IMPORTANT: room.person (the on-disk word FORMAT.md documents as "person
-  // id word at 0x19") is NOT reliable and is NOT used here. Cross-checking
-  // it against rule evidence (which room_is/go-exit conditions actually
-  // co-occur with which character's person_here/person_state/person_absent
-  // conditions or remove/summon/set_person_state actions) shows it flatly
-  // contradicts confirmed placements in every case that could be checked:
-  // e.g. room 1 "Hjemme" claims person=15 (Per), but every rule agrees Mor
-  // (1) is the one at Hjemme, and no rule ever ties Per to room 1 at all;
-  // room 7 "Landsby" claims person=5 (Kjerring), but Kjerring's stump/axe
-  // puzzle is unambiguously in room 8 "Skog" instead. The values below are
-  // instead mined from rule co-occurrence (grep rules_folded/global_rules
-  // for room_is/go conditions alongside person conditions or person
-  // actions for each character id) or, where that gave nothing, the
-  // in-record word at character offset 824 (also stale for several ids) or
-  // plain thematic/textual fit. Confidence varies per entry; see comments.
-  var HOME_ROOM = {
-    1: 1,    // Mor - Hjemme (strong: 3 rule hits, unambiguous)
-    2: 7,    // Rotter - Landsby (rule hit)
-    3: 7,    // Rotter2 - Landsby (rule hit; summoned alongside Rotter)
-    4: 7,    // Rotter3 - Landsby (rule hit, ties with "Ved elva" for a later scene)
-    5: 8,    // Kjerring - Skog (strong: go-exit blocking rule confirms)
-    6: 9,    // Heksa - Lysning (weak: only the in-record word; thematic "clearing")
-    7: 12,   // Skipet - Eika (strong: 6 rule hits; NOT "Skip" - that guess was wrong)
-    8: 56,   // Kongen - Kongsgård (weak: tied 1-1-1 across 3 rooms; "his estate" thematically)
-    9: 60,   // Prinsessa - Prinsesserom (weak: no rule hit, but named after her)
-    10: 57,  // Harer - Haremark (rule hit, matches name)
-    11: 57,  // Pål - Haremark (weak: message 114 "ved harekassen" only)
-    12: 30,  // Brutroll - Brua (very strong: 6 rule hits)
-    13: 16,  // Hedalstroll - Hedalskog (very strong: 8 rule hits)
-    14: 31,  // Rødhette - Sørforbru (weak: in-record word only)
-    15: 39,  // Per - best-effort guess, low confidence, no rule pins it
-    16: 40   // Mor og sønner - Avslutning (in-record word; never referenced by any rule)
-  };
-
-  // Characters who do NOT start present anywhere - they only ever appear
-  // via a `summon_person` action (confirmed: each id below is a
-  // summon_person target somewhere in rules_folded/global_rules, and for
-  // 3/4/7/11/15 there's also a matching "person_absent" guard elsewhere
-  // that only makes sense if they start absent, e.g. the ship-less "Du kan
-  // ikke gå den veien" at room 12 before Skipet is summoned). Brutroll (12)
-  // and Hedalstroll (13) are ALSO summon_person targets somewhere (re-spawn/
-  // retry edge cases) but start present and blocking their room from turn
-  // one per the much stronger go-exit-blocking rule evidence above, so they
-  // are deliberately not in this set.
-  var ABSENT_AT_START = { 3: 1, 4: 1, 7: 1, 11: 1, 15: 1, 16: 1 };
-
   // Portrait fallback for characters whose record has no assigned portrait
   // (word at record offset 288 is 0 - true for Rotter2/Rotter3, Heksa, Pål,
   // Per, "Mor og sønner"; verified by scanning the rest of their raw bytes
@@ -115,13 +66,11 @@
       self.objectStates[id] = o.state || 1;
     });
     Object.keys(this.rooms).forEach(function (id) { self.roomStates[id] = 1; });
-    Object.keys(this.characters).forEach(function (id) { self.personStates[id] = 1; });
-    // Deliberately NOT using room.person here - see the HOME_ROOM comment
-    // above for why that field is unreliable. Characters not in
-    // ABSENT_AT_START start present at their HOME_ROOM; the rest start
-    // absent (personLocations left unset) until a summon_person fires.
-    Object.keys(HOME_ROOM).forEach(function (id) {
-      if (!ABSENT_AT_START[id]) self.personLocations[id] = HOME_ROOM[id];
+    // Negative home = starts absent (ESPEN.ADV character word 824, disasm/0959.asm:06A0).
+    Object.keys(this.characters).forEach(function (id) {
+      var c = self.characters[id];
+      self.personStates[id] = c.start_state || 1;
+      self.personLocations[id] = c.home;
     });
   };
 
@@ -247,9 +196,11 @@
       case 'popup': this.log.push({ kind: 'popup', text: this.msg(a.a) }); break;
       case 'remove_object': this.objectLocations[a.a] = 0; break;
       case 'place_object': this.objectLocations[a.a] = this.currentRoom; break;
-      case 'remove_person': this.personLocations[a.a] = null; break;
+      case 'remove_person': this.personLocations[a.a] = 0; break;
+      // Only brings back someone not present anywhere (disasm/020a.asm:0388).
       case 'summon_person':
-        this.personLocations[a.a] = HOME_ROOM[a.a] != null ? HOME_ROOM[a.a] : this.currentRoom;
+        var c = this.characters[a.a];
+        if (c && !(this.personLocations[a.a] > 0)) this.personLocations[a.a] = Math.abs(c.home);
         break;
       case 'goto_room': this.currentRoom = a.a; break;
       case 'message': this.log.push({ kind: 'text', text: this.msg(a.a) }); break;
