@@ -18,16 +18,22 @@
     // portrait in the original data (portrait: 0); see engine.js.
     portrait: function (portraitNum) { return 'ESPENP_' + portraitNum + '.png'; },
     icon: function (iconNum) { return 'ESPEN_OBI_' + pad3(iconNum - 1) + '.png'; },
-    // Loads assets/new/<file> first, falls back to assets/orig/<file> if it
-    // 404s (static page, no server logic, so this is done via onerror).
+    // Loads the served WebP copy from assets/web/ (built from the assets/new/
+    // masters by tools/build_web_assets.py), falls back to assets/orig/<file>
+    // if it 404s (static page, no server logic, so this is done via onerror).
     apply: function (imgEl, filename) {
       imgEl.onerror = function () {
         imgEl.onerror = null;
         imgEl.src = 'assets/orig/' + filename;
       };
-      imgEl.src = 'assets/new/' + filename;
+      imgEl.src = 'assets/web/' + filename.replace(/\.png$/, '.webp') + VERSION_QUERY;
     }
   };
+
+  // Cache-busting query from <meta name="app-version">, so a static host never serves art from
+  // an older release next to newer code.
+  var versionMeta = root.document && root.document.querySelector('meta[name="app-version"]');
+  var VERSION_QUERY = versionMeta && versionMeta.content ? '?v=' + encodeURIComponent(versionMeta.content) : '';
 
   var DIRS = [
     { key: 'n', label: 'Nord' }, { key: 's', label: 'Sør' },
