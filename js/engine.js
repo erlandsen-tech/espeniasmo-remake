@@ -295,15 +295,38 @@
   // Directions to offer: real exits plus rule-only moves. Some rooms
   // (Strand, Galgebakke) have no exit data and move only through go-rules;
   // the original always showed all eight directions, so those worked there.
+  // When two exits lead to the same room (Hjemme: Sør and Ned both go to Kjeller) only one is
+  // offered, since two buttons read as two different routes. The one describing the movement
+  // (Opp/Ned/Inn/Ut) wins over a compass point. A deliberate UI change: in game.json every such
+  // pair also has identical go-rules (test/exits.test.js guards that), and go() still accepts both.
+  var DIR_PREFERENCE = ['up', 'down', 'in', 'out', 'n', 's', 'e', 'w'];
+
   Game.prototype.directions = function () {
     var self = this, st = this.roomState(), out = [];
+    var exits = (st && st.exits) || {};
     Object.keys(DIR_NUM).forEach(function (dir) {
       var ruled = self.keyedRules[0].concat(self.keyedRules[1]).some(function (r) {
         return self._matchKey(r, 'go', self.currentRoom, DIR_NUM[dir]);
       });
-      if ((st && st.exits && st.exits[dir]) || ruled) out.push(dir);
+      if (exits[dir] || ruled) out.push(dir);
     });
-    return out;
+    return out.filter(function (dir) {
+      return !exits[dir] || !out.some(function (other) {
+        return other !== dir && exits[other] === exits[dir] &&
+          DIR_PREFERENCE.indexOf(other) < DIR_PREFERENCE.indexOf(dir);
+      });
+    });
+  };
+
+  // The offered direction that does what `dir` does: `dir` itself if offered, else the offered
+  // exit to the same room (so the ↓ key still reaches Kjeller when only Ned is shown), else null.
+  Game.prototype.offeredDirection = function (dir) {
+    var offered = this.directions();
+    if (offered.indexOf(dir) !== -1) return dir;
+    var st = this.roomState(), exits = (st && st.exits) || {};
+    if (!exits[dir]) return null;
+    var twin = offered.filter(function (d) { return exits[d] === exits[dir]; })[0];
+    return twin || null;
   };
 
   Game.prototype.go = function (dir) {
@@ -413,7 +436,27 @@
     };
   };
 
+  // Throws on a save that does not fit the current game data (corrupt, older shape, or written
+  // before game.json was regenerated) and leaves the running game untouched in that case.
   Game.prototype.loadJSON = function (s) {
+    var self = this;
+    var isMap = function (x) { return x !== null && typeof x === 'object' && !Array.isArray(x); };
+    var fail = function (why) { throw new Error('invalid save: ' + why); };
+    if (!isMap(s)) fail('not an object');
+    ['roomStates', 'objectLocations', 'objectStates', 'personLocations', 'personStates', 'vars']
+      .forEach(function (k) { if (!isMap(s[k])) fail(k + ' missing'); });
+    if (!this.rooms[s.currentRoom]) fail('unknown room ' + s.currentRoom);
+    if (typeof s.score !== 'number') fail('score missing');
+    Object.keys(this.objects).forEach(function (id) {
+      if (!(id in s.objectLocations) || !(id in s.objectStates)) fail('object ' + id + ' missing');
+    });
+    Object.keys(this.characters).forEach(function (id) {
+      if (!(id in s.personLocations) || !(id in s.personStates)) fail('character ' + id + ' missing');
+    });
+    Object.keys(s.objectLocations).forEach(function (id) {
+      if (!self.objects[id]) fail('unknown object ' + id);
+    });
+
     this.currentRoom = s.currentRoom;
     this.roomStates = s.roomStates;
     this.objectLocations = s.objectLocations;

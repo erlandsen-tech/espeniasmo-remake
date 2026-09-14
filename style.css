@@ -20,7 +20,7 @@ header {
 }
 header h1 { font-size: 1.35rem; margin: 0; }
 #stats { font-size: 1rem; }
-#save-controls { margin-left: auto; display: flex; gap: 0.5rem; }
+#save-controls { margin-left: auto; display: flex; flex-wrap: wrap; gap: 0.5rem; }
 
 button {
   font-family: inherit; font-size: 1rem;
@@ -136,8 +136,75 @@ main {
 #popup-text p, #end-reason p { margin: 0 0 0.8rem; font-size: 1.15rem; line-height: 1.45; color: var(--glow); }
 .overlay-box button { margin-top: 0.4rem; min-width: 7rem; padding: 0.6rem 1.2rem; }
 
+.help-box {
+  max-width: 36rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  text-align: left;
+}
+.help-box h2 { margin-top: 0; color: var(--gold); }
+.help-box h3 { color: var(--gold); margin: 1rem 0 0.4rem; }
+.help-box p { margin: 0 0 0.6rem; line-height: 1.45; }
+.help-box table { border-collapse: collapse; width: 100%; margin-bottom: 0.6rem; }
+.help-box td { padding: 0.3rem 0.6rem 0.3rem 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+kbd {
+  font-family: inherit;
+  background: #3a2f1c;
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 0.05rem 0.4rem;
+  font-size: 0.85em;
+  color: var(--ink);
+}
+
+footer {
+  text-align: center;
+  padding: 1.5rem 1rem 2rem;
+  font-size: 0.85rem;
+  color: #b9ac8e;
+}
+
+button:focus-visible,
+#log:focus-visible {
+  outline: 3px solid var(--glow);
+  outline-offset: 2px;
+}
+
 @media (max-width: 900px) {
-  main { grid-template-columns: 1fr; }
-  #lower { flex-direction: column; }
-  #exits { width: 100%; }
+  main { grid-template-columns: 1fr; row-gap: 0.5rem; }
+  :root { --log-h: 8.5rem; }
+
+  /* Promote #stage's and #side-pane's children into the main grid so the
+   * compass and verbs can be reordered ahead of "Her"/"Sekk" without
+   * touching the DOM (ui.js builds into #verbs by id and must not move). */
+  #stage { display: contents; }
+  #side-pane { display: contents; }
+
+  /* Story text at full width (a column beside the compass wrapped every few words), then the
+   * compass, then the verbs; the portrait follows the verbs so they stay on the first screen. */
+  #room-name { order: 1; margin: 0 0 0.4rem; }
+  #scene-frame { order: 2; }
+  #lower { order: 3; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; }
+  #log { flex: none; }
+  #verbs { order: 4; }
+  #portrait-wrap { order: 5; }
+  #talk-menu { order: 5; }
+  #side-pane > h3 { order: 6; }
+  #room-objects { order: 6; }
+  #inventory { order: 6; }
+
+  #exits {
+    width: 100%;
+    height: auto;
+    gap: 0.2rem;
+    padding: 0.25rem;
+  }
+  #exits button { min-width: 44px; min-height: 44px; padding: 0.1rem; }
+  #verbs { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+  #verbs button { min-height: 44px; padding: 0.6rem 0.3rem; }
+}
+
+@media (max-width: 360px) {
+  #exits { aspect-ratio: 3 / 1.6; }
 }

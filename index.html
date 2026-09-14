@@ -3,14 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="app-version" content="2026-09-14.1">
+<meta name="description" content="Espen i Asmo – det norske eventyrspillet fra 1990, i ny drakt i nettleseren.">
+<meta property="og:title" content="Espen i Asmo">
+<meta property="og:description" content="Espen i Asmo – det norske eventyrspillet fra 1990, i ny drakt i nettleseren.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="nb_NO">
+<meta name="theme-color" content="#2c2313">
+<link rel="icon" type="image/png" href="favicon.png?v=2026-09-14.1">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2026-09-14.1">
 <title>Espen i Asmo</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=2026-09-14.1">
 </head>
 <body>
 <header>
   <h1>Espen i Asmo</h1>
   <div id="stats">Poeng: <span id="score">0</span> &middot; Runder: <span id="turns">0</span></div>
   <div id="save-controls">
+    <button id="help-btn" aria-haspopup="dialog">Hjelp</button>
     <button id="save-btn">Lagre</button>
     <button id="load-btn">Hent lagring</button>
     <button id="restart-btn">Start på nytt</button>
@@ -24,7 +34,7 @@
       <img id="scene" alt="">
     </div>
     <div id="lower">
-      <div id="log"></div>
+      <div id="log" role="log" aria-live="polite" aria-label="Fortelling" tabindex="0"></div>
       <nav id="exits" aria-label="Gå"><span class="hub">Gå</span></nav>
     </div>
   </section>
@@ -50,23 +60,51 @@
   </aside>
 </main>
 
+<footer>Espen i Asmo (1990) av Geir Larsen og Lars Vavik &middot; Nasjonalt læremiddelsenter</footer>
+
 <div id="popup-overlay" class="overlay hidden">
-  <div class="overlay-box" role="alertdialog" aria-labelledby="popup-text">
+  <div class="overlay-box" role="alertdialog" aria-modal="true" aria-labelledby="popup-text">
     <div id="popup-text"></div>
     <button id="popup-ok">OK</button>
   </div>
 </div>
 
 <div id="end-overlay" class="overlay hidden">
-  <div class="overlay-box">
+  <div class="overlay-box" role="alertdialog" aria-modal="true" aria-labelledby="end-title" aria-describedby="end-reason">
     <div id="end-reason"></div>
-    <p>Spillet er slutt.</p>
+    <p id="end-title">Spillet er slutt.</p>
     <button id="end-restart-btn">Start på nytt</button>
   </div>
 </div>
 
-<script src="js/engine.js"></script>
-<script src="js/data.js"></script>
-<script src="js/ui.js"></script>
+<div id="help-overlay" class="overlay hidden">
+  <div class="overlay-box help-box" role="dialog" aria-modal="true" aria-labelledby="help-title">
+    <h2 id="help-title">Slik spiller du</h2>
+    <p>Velg et verb: Se på, Ta, Bruk, Gi, Legg fra deg eller Snakk.</p>
+    <p>Klikk så på en ting under «Her» eller i «Sekk».</p>
+    <p>Gå med kompasset under bildet. Retninger du ikke kan gå, er grå.</p>
+    <p>Vil du snakke med noen, velger du Snakk og klikker på personen.</p>
+    <p>Du blir sulten underveis, så husk å spise. Spillet lagres automatisk etter hvert trekk.</p>
+    <h3>Tastatur</h3>
+    <table>
+      <tbody>
+        <tr><td><kbd>&uarr;</kbd><kbd>&darr;</kbd><kbd>&rarr;</kbd><kbd>&larr;</kbd></td><td>Nord, Sør, Øst, Vest</td></tr>
+        <tr><td><kbd>Page Up</kbd> / <kbd>Page Down</kbd></td><td>Opp, Ned</td></tr>
+        <tr><td><kbd>I</kbd></td><td>Inn</td></tr>
+        <tr><td><kbd>U</kbd></td><td>Ut</td></tr>
+        <tr><td><kbd>1</kbd>&ndash;<kbd>6</kbd></td><td>Verbene</td></tr>
+        <tr><td><kbd>H</kbd></td><td>Denne hjelpen</td></tr>
+        <tr><td><kbd>Esc</kbd></td><td>Lukk meldinger</td></tr>
+      </tbody>
+    </table>
+    <h3>Om spillet</h3>
+    <p>Espen i Asmo (1990) er laget av Geir Larsen og Lars Vavik og utgitt av Nasjonalt læremiddelsenter / Utdannings- og forskningsdepartementet. Denne nettversjonen bruker originalens historie, tekst og regler. Den nye grafikken er laget med KI, med originalbildene som forlegg.</p>
+    <button id="help-close">Spill</button>
+  </div>
+</div>
+
+<script src="js/engine.js?v=2026-09-14.1"></script>
+<script src="js/data.js?v=2026-09-14.1"></script>
+<script src="js/ui.js?v=2026-09-14.1"></script>
 </body>
 </html>
