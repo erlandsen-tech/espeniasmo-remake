@@ -119,7 +119,7 @@
    "states": [
     {
      "scene": 10,
-     "desc": "Fra sør kan du såvidt høre elva suse. Stien fortsetter nordover, der du kan se  et kirketårn over trærne.",
+     "desc": "Fra sør kan du såvidt høre elva suse. Stien fortsetter nordover, der du kan se et kirketårn over trærne.",
      "exits": {
       "n": 7,
       "s": 5
@@ -136,7 +136,7 @@
    "states": [
     {
      "scene": 9,
-     "desc": "Landsbyen er folketom. Det ser ut til at  alle har flyktet av en eller annen grunn.",
+     "desc": "Landsbyen er folketom. Det ser ut til at alle har flyktet av en eller annen grunn.",
      "exits": {
       "s": 6
      }
@@ -310,7 +310,7 @@
    "states": [
     {
      "scene": 39,
-     "desc": "Fra sletta der du står er det vanskelig  å se hvor veien fører videre. Skogen blir tettere lenger nord.",
+     "desc": "Fra sletta der du står er det vanskelig å se hvor veien fører videre. Skogen blir tettere lenger nord.",
      "exits": {
       "s": 15
      }
@@ -326,7 +326,7 @@
    "states": [
     {
      "scene": 27,
-     "desc": "Ei steinbru fører over elva. Duren fra  fossen er kraftig, og vanndråper driver over stien.",
+     "desc": "Ei steinbru fører over elva. Duren fra fossen er kraftig, og vanndråper driver over stien.",
      "exits": {
       "n": 15,
       "s": 31
@@ -829,7 +829,7 @@
      "icon": 19,
      "portable": true,
      "flags": 0,
-     "desc": "Veden er tørr og klar for  peisen."
+     "desc": "Veden er tørr og klar for peisen."
     }
    ]
   },
@@ -955,7 +955,7 @@
      "icon": 27,
      "portable": true,
      "flags": 0,
-     "desc": "Espen, vi vil bli rike. Du må komme etter.   Per og På.."
+     "desc": "Espen, vi vil bli rike. Du må komme etter. Per og På.."
     }
    ]
   },
@@ -1443,7 +1443,7 @@
      "icon": 66,
      "portable": true,
      "flags": 0,
-     "desc": "Det er ennå over halv- parten igjen av brødet."
+     "desc": "Det er ennå over halvparten igjen av brødet."
     },
     {
      "icon": 73,
@@ -1537,7 +1537,7 @@
      "icon": 71,
      "portable": true,
      "flags": 0,
-     "desc": "De tre bønnene ser ut til  å kunne plantes."
+     "desc": "De tre bønnene ser ut til å kunne plantes."
     }
    ]
   },
@@ -2179,7 +2179,7 @@
     "Er det du som er så god til å snakke for deg?",
     "Huff, her var det godt og varmt.",
     "Kongen tror at jeg vil vinne.",
-    "Jeg holder dette skål- bruddet under.",
+    "Jeg holder dette skålbruddet under.",
     "Nei, men denne er krokete!",
     "Da kan jeg vel få stekt skjæra mi?",
     "Nå kan du hente bror min!"
@@ -2387,9 +2387,9 @@
   "Du spør som du har vett til!",
   "Jeg vil løs først!",
   "Hogg flis, sov og seil.",
-  "Ja, jeg har ikke spist på  tre dager.",
+  "Ja, jeg har ikke spist på tre dager.",
   "Farvel, Espen, og ta deg i akt for trolla.",
-  "Stubben splintres og for- svinner. Kona reiser seg.",
+  "Stubben splintres og forsvinner. Kona reiser seg.",
   "Frekkas! Hjelp meg heller løs.",
   "Ja, du finner spor etter dem nede i sekken min.",
   "Det ligger noe fint til deg i sekken.",
@@ -2485,7 +2485,7 @@
   "Mynten lager et svakt plask nede i brønnen.",
   "Du merker en bevegelse ved muren.",
   "Du snubler i mørket.",
-  "En tørrfisk henger i tak- bjelken.",
+  "En tørrfisk henger i takbjelken.",
   "Den har en nøkkel i en snor om halsen.",
   "Du kan ikke gå den veien.",
   "Du har smakt bedre mat!",
@@ -2509,9 +2509,9 @@
   "Nede i hullet ser du et skrin.",
   "I skrinet ligger en kalvehale.",
   "Idet du stiger opp av vannet blir du deg selv.",
-  "Når du blåser i nøkkel- hullet går skrinet opp.",
+  "Når du blåser i nøkkelhullet går skrinet opp.",
   "Hei , broder!!",
-  "En spade er halvt ned- gravd i sanden.",
+  "En spade er halvt nedgravd i sanden.",
   "Noen har glemt ei korg bak busken.",
   "Etter en bit av eplet blir du så merkelig sl...",
   "Du finner et blankt rør.",

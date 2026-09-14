@@ -16,7 +16,15 @@ def words(b, n):
     return list(struct.unpack('<%dH' % n, b[:2*n]))
 
 def joined(ls):
-    return ' '.join(l for l in ls if l).strip()
+    # Screen lines are joined with a space, except that a word hyphenated at a line end is rejoined
+    # ("for-" + "svinner" -> "forsvinner"). "øst- og vestsiden" style hyphens are real and stay.
+    out = ''
+    for l in (l.strip() for l in ls if l.strip()):
+        if out.endswith('-') and l[0].islower() and l.split()[0] not in ('og', 'eller'):
+            out = out[:-1] + l
+        else:
+            out = out + ' ' + l if out else l
+    return out
 
 def rooms(d):
     out = []
