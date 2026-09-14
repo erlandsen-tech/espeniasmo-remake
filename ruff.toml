@@ -1,0 +1,6 @@
+# Run with: uvx ruff check tools/
+target-version = "py312"
+
+[lint]
+# Bug-catching only. The tools use a dense one-statement-per-line-optional style on purpose.
+select = ["E9", "F"]
