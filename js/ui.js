@@ -130,7 +130,11 @@
     dialogReturnTo = document.activeElement;
     overlayEl.classList.remove('hidden');
     setChromeInert(true);
-    focusEl.focus();
+    // Focusing a button at the end of a scrolling box (the help's "Spill") would scroll the
+    // box to the bottom and hide the title on small screens, so open at the top instead.
+    var box = overlayEl.querySelector('.overlay-box');
+    if (box) box.scrollTop = 0;
+    focusEl.focus({ preventScroll: true });
   }
 
   function closeDialog(overlayEl) {
