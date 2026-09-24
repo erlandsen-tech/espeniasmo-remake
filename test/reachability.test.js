@@ -1,7 +1,6 @@
 // Static check: every keyed rule must be triggerable from a control the UI can show.
 const g = require('../game.json');
 const dialogue = require('../dialogue.json');
-const DIR = { 1: 'n', 2: 's', 3: 'e', 4: 'w', 5: 'out', 6: 'in', 7: 'up', 8: 'down' };
 const UI_VERBS = new Set(['go', 'take', 'use', 'look', 'give', 'drop', 'talk']);
 const rooms = Object.fromEntries(g.rooms.map(r => [r.id, r]));
 const problems = [];

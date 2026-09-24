@@ -37,7 +37,6 @@ def decode_form(d, off, end):
     return img.convert('RGB')
 
 def forms(d):
-    off = 0
     def walk(off, end):
         while off+8 <= end:
             tid = d[off:off+4]; sz = struct.unpack('>I', d[off+4:off+8])[0]

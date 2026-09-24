@@ -71,7 +71,7 @@ def fold(rules):
     def is_(x, op, a=None, b=None):
         return x['op'] == op and (a is None or x.get('a') == a) and (b is None or x.get('b') == b)
     while i < len(rules):
-        r = rules[i]; key = (r['verb'], r['k1'], r['k2'])
+        r = rules[i]
         conds = []; acts = []; j = i; ok = True
         if is_(r['cond'], 'var_eq', V2, 0) and is_(r['act'], 'var_set', 0, 0):
             j += 1
