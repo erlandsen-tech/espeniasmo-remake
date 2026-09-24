@@ -1,7 +1,7 @@
 # Remake plan: Espen i Asmo in the browser
 
 Goal: same story and puzzles, modern art generated from the original scenes, point-and-click
-controls, runs as a static web page. Private use.
+controls, runs as a static web page. Public release approved by the authors (see Rights).
 
 ## Status
 
@@ -38,4 +38,6 @@ controls, runs as a static web page. Private use.
 ## Rights
 
 Copyright: Utdannings- og forskningsdepartementet / Nasjonalt læremiddelsenter, 1990. Authors
-Geir Larsen and Lars Vavik. Fine for private use; do not publish without asking.
+Geir Larsen and Lars Vavik. On 2026-09-14 Geir Larsen approved publishing the remake after also
+speaking to Lars Vavik. By email: no objections to publication, "kjør i vei". By phone, to John: "do
+whatever you want, I am just incredibly happy it still lives."

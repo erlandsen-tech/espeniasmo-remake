@@ -1,0 +1,11 @@
+# Public site. Publication approved by the original authors on 2026-09-14 (see PLAN.md, Rights).
+:8080 {
+	root * /srv
+	encode zstd gzip
+
+	# Files carry ?v=<app-version>; only the page itself must never be cached.
+	@page path / /index.html
+	header @page Cache-Control "no-cache"
+
+	file_server
+}

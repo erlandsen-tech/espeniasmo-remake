@@ -1,0 +1,12 @@
+# Allow-list: upload only what deploy/Dockerfile copies. Everything else (original game files,
+# disassembly, MetaWINDOW, ~270 MB of art masters) stays out of the build context.
+*
+!deploy/Caddyfile
+!index.html
+!style.css
+!favicon.png
+!apple-touch-icon.png
+!game.json
+!dialogue.json
+!js/
+!assets/web/

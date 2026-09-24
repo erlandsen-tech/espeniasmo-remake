@@ -11,8 +11,9 @@ A browser remake of *Espen i Asmo* (1990), a Norwegian DOS adventure. Two halves
 - **The remake**: `index.html`, `style.css`, `js/`, data in `game.json` / `dialogue.json`. Vanilla JS, no build
   step, no framework, no npm dependencies.
 
-Copyright belongs to the original publisher: private use only. Do not publish game text, art or data to any
-external service (artifacts, gists, pastebins).
+Public release of the remake is approved by the original author Geir Larsen (email 2026-09-14, after talking
+to co-author Lars Vavik). Publication means the deployed site only: the original files, disassembly and art
+masters stay out of the image (`.dockerignore`) and off external services (artifacts, gists, pastebins).
 
 ## Commands
 
